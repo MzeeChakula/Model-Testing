@@ -1,6 +1,7 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { apiService } from '../services/api.js'
 
 const { t } = useI18n()
 
@@ -9,43 +10,47 @@ const selectedCategory = ref('all')
 const selectedRegion = ref('all')
 
 // Local Ugandan foods database with pricing (UGX per kg)
-const foodsDatabase = ref([
-  // Staples
-  { name: 'Matooke (Plantain)', category: 'staples', region: 'central', energy: 122, protein: 1.3, carbs: 31.9, fat: 0.4, fiber: 2.3, calcium: 3, iron: 0.6, pricePerKg: 2500, available: true },
-  { name: 'Sweet Potatoes', category: 'staples', region: 'all', energy: 86, protein: 1.6, carbs: 20.1, fat: 0.1, fiber: 3.0, calcium: 30, iron: 0.6, pricePerKg: 1500, available: true },
-  { name: 'Cassava', category: 'staples', region: 'all', energy: 160, protein: 1.4, carbs: 38.1, fat: 0.3, fiber: 1.8, calcium: 16, iron: 0.3, pricePerKg: 1200, available: true },
-  { name: 'Millet', category: 'staples', region: 'northern', energy: 378, protein: 11.0, carbs: 73.0, fat: 4.2, fiber: 8.5, calcium: 8, iron: 3.0, pricePerKg: 3500, available: true },
-  { name: 'Sorghum', category: 'staples', region: 'northern', energy: 329, protein: 10.6, carbs: 72.1, fat: 3.3, fiber: 6.7, calcium: 13, iron: 3.4, pricePerKg: 3200, available: true },
+const foodsDatabase = ref([])
 
-  // Proteins
-  { name: 'Beans (Red)', category: 'proteins', region: 'all', energy: 333, protein: 21.3, carbs: 60.0, fat: 1.0, fiber: 15.0, calcium: 143, iron: 6.7, pricePerKg: 4000, available: true },
-  { name: 'Groundnuts', category: 'proteins', region: 'all', energy: 567, protein: 25.8, carbs: 16.1, fat: 49.2, fiber: 8.5, calcium: 92, iron: 4.6, pricePerKg: 6000, available: true },
-  { name: 'Small Fish (Mukene)', category: 'proteins', region: 'central', energy: 196, protein: 24.0, carbs: 0, fat: 11.4, fiber: 0, calcium: 400, iron: 3.5, pricePerKg: 8000, available: true },
-  { name: 'Tilapia', category: 'proteins', region: 'all', energy: 96, protein: 20.1, carbs: 0, fat: 1.7, fiber: 0, calcium: 14, iron: 0.6, pricePerKg: 12000, available: true },
-  { name: 'Eggs', category: 'proteins', region: 'all', energy: 155, protein: 12.6, carbs: 1.1, fat: 10.6, fiber: 0, calcium: 56, iron: 1.8, pricePerKg: 15000, available: true },
-  { name: 'Milk', category: 'proteins', region: 'western', energy: 61, protein: 3.2, carbs: 4.8, fat: 3.3, fiber: 0, calcium: 113, iron: 0.0, pricePerKg: 2800, available: true },
+// Load foods from backend CSV-parsed endpoint
+const loadFoods = async () => {
+  try {
+    const res = await apiService.get('/foods/local')
+    if (res && res.data) {
+      // ensure category and region naming align with previous frontend expectations
+      foodsDatabase.value = res.data.map(f => ({
+        name: f.name || 'Unknown',
+        category: (f.category || 'other').toLowerCase(),
+        region: (f.region || 'all').toLowerCase(),
+        energy: f.energy || 0,
+        protein: f.protein || 0,
+        carbs: f.carbs || 0,
+        fat: f.fat || 0,
+        fiber: f.fiber || 0,
+        calcium: f.calcium || 0,
+        iron: f.iron || 0,
+        pricePerKg: f.pricePerKg || 0,
+        available: !!f.available
+      }))
+    }
+  } catch (err) {
+    // fallback: keep empty database; developer can check console for details
+    // eslint-disable-next-line no-console
+    console.error('Failed to load foods from API', err)
+  }
+}
 
-  // Vegetables
-  { name: 'Nakati (Greens)', category: 'vegetables', region: 'all', energy: 23, protein: 2.9, carbs: 3.6, fat: 0.3, fiber: 2.1, calcium: 232, iron: 3.2, pricePerKg: 2000, available: true },
-  { name: 'Dodo (Amaranth)', category: 'vegetables', region: 'all', energy: 23, protein: 2.5, carbs: 4.0, fat: 0.3, fiber: 2.8, calcium: 215, iron: 2.3, pricePerKg: 2000, available: true },
-  { name: 'Cabbage', category: 'vegetables', region: 'all', energy: 25, protein: 1.3, carbs: 5.8, fat: 0.1, fiber: 2.5, calcium: 40, iron: 0.5, pricePerKg: 1800, available: true },
-  { name: 'Tomatoes', category: 'vegetables', region: 'all', energy: 18, protein: 0.9, carbs: 3.9, fat: 0.2, fiber: 1.2, calcium: 10, iron: 0.3, pricePerKg: 2500, available: true },
-  { name: 'Onions', category: 'vegetables', region: 'all', energy: 40, protein: 1.1, carbs: 9.3, fat: 0.1, fiber: 1.7, calcium: 23, iron: 0.2, pricePerKg: 3000, available: true },
-
-  // Fruits
-  { name: 'Bananas (Sweet)', category: 'fruits', region: 'all', energy: 89, protein: 1.1, carbs: 22.8, fat: 0.3, fiber: 2.6, calcium: 5, iron: 0.3, pricePerKg: 1500, available: true },
-  { name: 'Papaya', category: 'fruits', region: 'all', energy: 43, protein: 0.5, carbs: 10.8, fat: 0.3, fiber: 1.7, calcium: 20, iron: 0.3, pricePerKg: 2000, available: true },
-  { name: 'Mango', category: 'fruits', region: 'all', energy: 60, protein: 0.8, carbs: 15.0, fat: 0.4, fiber: 1.6, calcium: 11, iron: 0.2, pricePerKg: 2500, available: true },
-  { name: 'Pineapple', category: 'fruits', region: 'all', energy: 50, protein: 0.5, carbs: 13.1, fat: 0.1, fiber: 1.4, calcium: 13, iron: 0.3, pricePerKg: 3000, available: true },
-  { name: 'Avocado', category: 'fruits', region: 'western', energy: 160, protein: 2.0, carbs: 8.5, fat: 14.7, fiber: 6.7, calcium: 12, iron: 0.6, pricePerKg: 4000, available: true }
-])
+onMounted(() => {
+  loadFoods()
+})
 
 const categories = [
   { value: 'all', label: 'All Foods', icon: 'pi pi-th-large' },
   { value: 'staples', label: 'Staples', icon: 'pi pi-circle-fill' },
   { value: 'proteins', label: 'Proteins', icon: 'pi pi-heart' },
   { value: 'vegetables', label: 'Vegetables', icon: 'pi pi-sun' },
-  { value: 'fruits', label: 'Fruits', icon: 'pi pi-star' }
+  { value: 'fruits', label: 'Fruits', icon: 'pi pi-star' },
+  { value: 'fats', label: 'Fats & Oils', icon: 'pi pi-leaf' }
 ]
 
 const regions = [

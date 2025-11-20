@@ -6,7 +6,7 @@ from pathlib import Path
 from contextlib import asynccontextmanager
 
 from .models import ModelLoader
-from .routers import predict_router, health_router
+from .routers import predict_router, health_router, foods_router
 from .routers import predict, health
 from .routers.metrics import router as metrics_router
 
@@ -87,6 +87,7 @@ except Exception as e:
 app.include_router(health_router)
 app.include_router(predict_router)
 app.include_router(metrics_router)
+app.include_router(foods_router)
 
 
 @app.get("/", include_in_schema=False)

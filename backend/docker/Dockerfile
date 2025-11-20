@@ -1,6 +1,5 @@
 # Multi-stage build for MzeeChakula Backend API
 
-
 # Builder stage
 FROM python:3.12-slim AS builder
 

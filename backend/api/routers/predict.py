@@ -40,38 +40,7 @@ async def predict_caloric_needs(
         description="Model to use: 'auto', 'huggingface', 'local_xgboost', or 'offline'"
     )
 ):
-    """
-    Predict daily caloric needs for elderly individuals.
-    
-    **Model Priority (auto mode):**
-    1. Hugging Face (XGBoost) - Best accuracy, requires internet
-    2. Local XGBoost - Good accuracy, works offline
-    3. HistGradient - Lightweight fallback
-    
-    **Example Input:**
-    ```json
-    {
-      "Energy_kcal_per_serving": 350,
-      "Protein_g_per_serving": 15,
-      "Fat_g_per_serving": 10,
-      "Carbohydrates_g_per_serving": 45,
-      "Fiber_g_per_serving": 5,
-      "Calcium_mg_per_serving": 200,
-      "Iron_mg_per_serving": 3,
-      "Zinc_mg_per_serving": 2,
-      "VitaminA_ug_per_serving": 500,
-      "VitaminC_mg_per_serving": 20,
-      "Potassium_mg_per_serving": 400,
-      "Magnesium_mg_per_serving": 50,
-      "region_encoded": 0,
-      "condition_encoded": 0,
-      "age_group_encoded": 1,
-      "season_encoded": 0,
-      "portion_size_g": 250,
-      "estimated_cost_ugx": 5000
-    }
-    ```
-    """
+  
     if model_loader is None:
         raise HTTPException(status_code=500, detail="Model loader not initialized")
     
@@ -182,3 +151,38 @@ async def get_example_input():
             "season": "0 = Dry"
         }
     }
+
+
+@router.get(
+    "/recommend",
+    summary="Recommend similar foods",
+    description="Return top-k similar foods from HF ensemble embeddings. Provide `by_id` or `vector` (comma-separated) and optional `top_k`."
+)
+async def recommend(
+    by_id: Optional[str] = Query(None, description="Lookup recommendations by item id from ensemble"),
+    vector: Optional[str] = Query(None, description="Comma-separated vector to query embeddings"),
+    top_k: Optional[int] = Query(5, description="Number of top similar items to return")
+):
+    if model_loader is None:
+        raise HTTPException(status_code=500, detail="Model loader not initialized")
+
+    if by_id is None and vector is None:
+        raise HTTPException(status_code=400, detail="Provide either by_id or vector")
+
+    qvec = None
+    if vector is not None:
+        try:
+            qvec = [float(x) for x in vector.split(',') if x.strip()]
+        except Exception as e:
+            raise HTTPException(status_code=400, detail=f"Invalid vector: {e}")
+
+    try:
+        result = model_loader.recommend_foods(query_vector=qvec, top_k=top_k, by_id=by_id)
+        if not result.get('success'):
+            raise HTTPException(status_code=500, detail=result.get('error', 'Recommendation failed'))
+        return result
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Recommendation error: {e}")
+        raise HTTPException(status_code=500, detail=str(e))

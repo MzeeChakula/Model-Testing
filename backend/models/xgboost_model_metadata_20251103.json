@@ -1,0 +1,76 @@
+{
+  "model_type": "XGBoost Regressor",
+  "model_version": "v1.0_optimized",
+  "training_date": "2025-11-03 17:23:35",
+  "dataset_size": 1000,
+  "train_size": 700,
+  "test_size": 300,
+  "n_features": 18,
+  "feature_names": [
+    "Energy_kcal_per_serving",
+    "Protein_g_per_serving",
+    "Fat_g_per_serving",
+    "Carbohydrates_g_per_serving",
+    "Fiber_g_per_serving",
+    "Calcium_mg_per_serving",
+    "Iron_mg_per_serving",
+    "Zinc_mg_per_serving",
+    "VitaminA_\u00b5g_per_serving",
+    "VitaminC_mg_per_serving",
+    "Potassium_mg_per_serving",
+    "Magnesium_mg_per_serving",
+    "region_encoded",
+    "condition_encoded",
+    "age_group_encoded",
+    "season_encoded",
+    "portion_size_g",
+    "estimated_cost_ugx"
+  ],
+  "best_parameters": {
+    "colsample_bytree": 0.8,
+    "gamma": 0,
+    "learning_rate": 0.05,
+    "max_depth": 4,
+    "min_child_weight": 5,
+    "n_estimators": 200,
+    "reg_alpha": 0,
+    "reg_lambda": 1.5,
+    "subsample": 0.8
+  },
+  "performance": {
+    "train_r2": 0.9308613599852031,
+    "test_r2": 0.6710408438136394,
+    "train_rmse": 1.646088466960013,
+    "test_rmse": 3.595749432026818,
+    "train_mae": 1.2923566384290264,
+    "test_mae": 2.8423969070999715,
+    "training_time_seconds": 25.0079927444458
+  },
+  "baseline_comparison": {
+    "baseline_test_r2": 0.6310739934579258,
+    "baseline_test_mae": 2.998214489299364,
+    "improvement_r2": 0.03996685035571357,
+    "improvement_mae": 0.15581758219939257
+  },
+  "regions": [
+    "Central Uganda (Buganda)",
+    "Western Uganda (Ankole, Tooro, Kigezi, Bunyoro)",
+    "Eastern Uganda (Busoga, Bugisu, Teso)",
+    "Northern Uganda (Acholi, Lango, Karamoja, West Nile)"
+  ],
+  "conditions": [
+    "Hypertension",
+    "Undernutrition",
+    "Anemia",
+    "Frailty",
+    "Digestive issues",
+    "Arthritis",
+    "Osteoporosis",
+    "Diabetes"
+  ],
+  "age_groups": [
+    "80+",
+    "60-70",
+    "70-80"
+  ]
+}

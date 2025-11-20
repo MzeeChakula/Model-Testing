@@ -43,7 +43,7 @@ ENV PATH="/opt/venv/bin:$PATH"
 
 # Copy application code
 COPY --chown=appuser:appuser backend/api /app/api
-COPY --chown=appuser:appuser src/results/models /app/models
+COPY --chown=appuser:appuser backend/models /app/models
 
 # Create necessary directories
 RUN mkdir -p /app/logs && chown -R appuser:appuser /app/logs

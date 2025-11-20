@@ -14,11 +14,6 @@ services:
       - PORT=8000
       - PYTHONUNBUFFERED=1
     volumes:
-      # Optional: Mount models directory for easy updates without rebuilding
-      # Uncomment if you want to update models without rebuilding image
-      # - ../../src/results/models:/app/models:ro
-
-      # Optional: Mount logs directory
       - api-logs:/app/logs
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
@@ -28,22 +23,6 @@ services:
       start_period: 40s
     networks:
       - mzeechakula-network
-
-  # Optional: Nginx reverse proxy (uncomment if needed)
-  # nginx:
-  #   image: nginx:alpine
-  #   container_name: mzeechakula-nginx
-  #   restart: unless-stopped
-  #   ports:
-  #     - "80:80"
-  #     - "443:443"
-  #   volumes:
-  #     - ./nginx.conf:/etc/nginx/nginx.conf:ro
-  #     - ./ssl:/etc/nginx/ssl:ro
-  #   depends_on:
-  #     - api
-  #   networks:
-  #     - mzeechakula-network
 
 volumes:
   api-logs:

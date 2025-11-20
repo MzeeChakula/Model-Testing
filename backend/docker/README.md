@@ -268,9 +268,9 @@ docker inspect mzeechakula-api
 
 ### Model loading errors
 
-- Ensure model files are present in `src/results/models/`
+- Ensure model files are present in `backend/models/` (used for local uploads)
 - Check file permissions (models should be readable)
-- Verify MODEL_DIR environment variable
+- Verify `MODEL_DIR` environment variable
 
 ### Connection refused
 

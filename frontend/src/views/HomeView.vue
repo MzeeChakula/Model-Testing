@@ -165,73 +165,92 @@ const goToFoods = () => {
         </div>
 
         <div class="hero-illustration">
-          <div class="illustration-card">
-            <i class="pi pi-heart" style="font-size: 8rem; color: var(--primary-color);"></i>
-          </div>
+            <div class="illustration-card">
+              <img src="/icons/logotransparent.svg" alt="illustration" style="height:8rem; width:auto; filter: none;" />
+            </div>
         </div>
       </div>
     </section>
 
-    <!-- System Overview Section -->
+    <!-- System Overview / Models Section (two-column layout) -->
     <section class="overview-section">
       <div class="container">
-        <div class="overview-content">
-          <h2 class="section-title">About MzeeChakula</h2>
-          <p class="overview-text">
-            MzeeChakula is an innovative AI-powered nutrition planning system specifically designed for elderly care in Uganda.
-            Our platform combines advanced machine learning with graph-enhanced language models to deliver personalized,
-            culturally-appropriate meal recommendations using locally sourced foods.
-          </p>
-          <p class="overview-text">
-            Built on cutting-edge XGBoost algorithms and knowledge graph reasoning, the system analyzes individual health profiles,
-            regional food availability, and seasonal variations to provide accurate daily caloric needs predictions and tailored
-            nutrition plans. Whether you're a caregiver, healthcare professional, or family member, MzeeChakula helps ensure
-            optimal nutrition for Uganda's elderly population.
-          </p>
-          <div class="overview-features">
-            <div class="overview-badge">
-              <i class="pi pi-check-circle"></i>
-              <span>67% Model Accuracy (R²)</span>
+        <h2 class="section-title">MzeeChakula Models</h2>
+
+        <div class="models-grid">
+          <div class="model-card models-left">
+            <h3>Overview</h3>
+            <p class="overview-text">
+              <strong>Graph Neural Network Models for Elderly Nutrition Planning in Uganda</strong>
+            </p>
+            <p class="overview-text">
+              The project contains trained GNN models, embeddings and a production ensemble used to provide personalized,
+              culturally-appropriate meal recommendations for elderly populations across Uganda.
+            </p>
+
+            <h4>Repository</h4>
+            <ul>
+              <li><strong>models/</strong> — Trained GNNs, checkpoints and embeddings (Git LFS)</li>
+              <li><strong>scripts/</strong> — Ensemble utilities & deployment helpers</li>
+              <li><strong>notebooks/</strong> — Training and evaluation notebooks</li>
+            </ul>
+
+            <h4>Ensemble</h4>
+            <p class="overview-text">Weighted combination of: <strong>CRGN (40%)</strong>, <strong>HetGNN (35%)</strong>, <strong>GAT (25%)</strong>.</p>
+
+            <div class="card small">
+              <strong>Quick Facts</strong>
+              <div class="overview-features" style="margin-top:0.5rem;">
+                <div class="overview-badge"><span>~5.36M params</span></div>
+                <div class="overview-badge"><span>~15 ms CPU (top-10)</span></div>
+                <div class="overview-badge"><span>English &amp; Luganda</span></div>
+              </div>
             </div>
-            <div class="overview-badge">
-              <i class="pi pi-check-circle"></i>
-              <span>5 ML Models</span>
+
+            <div class="card">
+              <strong>Deployment</strong>
+              <pre style="background:var(--surface-color); padding:0.6rem; border-radius:6px; overflow:auto; margin-top:0.5rem;">
+from huggingface_hub import snapshot_download
+model_path = snapshot_download("Shakiran/MzeeChakulaNutritionEnsembleModel")
+# then load the ensemble from the downloaded snapshot
+              </pre>
             </div>
-            <div class="overview-badge">
-              <i class="pi pi-check-circle"></i>
-              <span>Offline-First Design</span>
+          </div>
+
+          <div class="model-card models-right">
+            <h3>Models &amp; Performance</h3>
+            <div style="overflow:auto; max-height:420px;">
+              <table class="models-table" style="width:100%; border-collapse:collapse;">
+                <thead>
+                  <tr>
+                    <th style="text-align:left; padding:8px; border-bottom:1px solid var(--muted)">Model</th>
+                    <th style="text-align:left; padding:8px; border-bottom:1px solid var(--muted)">Task</th>
+                    <th style="text-align:right; padding:8px; border-bottom:1px solid var(--muted)">Loss</th>
+                    <th style="text-align:right; padding:8px; border-bottom:1px solid var(--muted)">Params</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td style="padding:8px">CRGN ⭐</td><td style="padding:8px">Link Prediction</td><td style="padding:8px; text-align:right">0.6336</td><td style="padding:8px; text-align:right">326K</td></tr>
+                  <tr><td style="padding:8px">HetGNN ⭐</td><td style="padding:8px">Link Prediction</td><td style="padding:8px; text-align:right">0.5664</td><td style="padding:8px; text-align:right">4.66M</td></tr>
+                  <tr><td style="padding:8px">GAT ⭐</td><td style="padding:8px">Link Prediction</td><td style="padding:8px; text-align:right">0.6373</td><td style="padding:8px; text-align:right">375K</td></tr>
+                  <tr><td style="padding:8px">R-GCN</td><td style="padding:8px">Link Prediction</td><td style="padding:8px; text-align:right">0.6416</td><td style="padding:8px; text-align:right">2.29M</td></tr>
+                  <tr><td style="padding:8px">Graph-RAG</td><td style="padding:8px">Link Prediction</td><td style="padding:8px; text-align:right">0.6712</td><td style="padding:8px; text-align:right">3.02M</td></tr>
+                  <tr><td style="padding:8px">KGNN</td><td style="padding:8px">Link Prediction</td><td style="padding:8px; text-align:right">0.7359</td><td style="padding:8px; text-align:right">339K</td></tr>
+                  <tr><td style="padding:8px">G-GPT</td><td style="padding:8px">Sequence Gen</td><td style="padding:8px; text-align:right">0.6853</td><td style="padding:8px; text-align:right">22.3M</td></tr>
+                  <tr><td style="padding:8px">GRN</td><td style="padding:8px">Temporal</td><td style="padding:8px; text-align:right">0.0029</td><td style="padding:8px; text-align:right">3.8K</td></tr>
+                  <tr><td style="padding:8px">TCN</td><td style="padding:8px">Temporal</td><td style="padding:8px; text-align:right">0.0150</td><td style="padding:8px; text-align:right">29K</td></tr>
+                </tbody>
+              </table>
             </div>
-            <div class="overview-badge">
-              <i class="pi pi-check-circle"></i>
-              <span>Local Foods Database</span>
+
+            <div class="card" style="margin-top:1rem;">
+              <strong>Research</strong>
+              <p class="overview-text" style="margin:0.5rem 0 0 0;">Notebooks and data processing pipelines are available under <code>notebooks/</code> and the companion <code>MzeeChakula/data</code> repository.</p>
             </div>
           </div>
         </div>
       </div>
     </section>
-
-    <!-- Features Section -->
-    <section class="features-section">
-      <div class="container">
-        <h2 class="section-title">{{ t('home.features.title') }}</h2>
-
-        <div class="features-grid">
-          <div
-            v-for="(feature, index) in features"
-            :key="index"
-            class="feature-card"
-            :style="{ backgroundColor: feature.color }"
-          >
-            <div class="feature-icon">
-              <i :class="feature.icon"></i>
-            </div>
-            <h3 class="feature-title">{{ feature.title }}</h3>
-            <p class="feature-description">{{ feature.description }}</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
     <!-- How It Works -->
     <section class="how-it-works-section">
       <div class="container">
@@ -372,6 +391,27 @@ const goToFoods = () => {
   font-size: 2rem;
   color: var(--secondary-color);
 }
+.stat-icon {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+}
+.hero-badge-logo {
+  height: 28px;
+  width: auto;
+}
+.btn-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+.overview-icon, .feature-icon-img {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  margin-right: 8px;
+}
 
 .stat-value {
   font-size: var(--font-size-xl);
@@ -411,6 +451,38 @@ const goToFoods = () => {
   margin: 0 auto;
   text-align: center;
 }
+
+.models-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-lg);
+}
+
+@media (min-width: 992px) {
+  .models-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-xl);
+    align-items: start;
+  }
+}
+
+.model-card {
+  background: white;
+  padding: var(--spacing-lg);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}
+
+.model-card.small {
+  padding: var(--spacing-sm);
+}
+
+.models-left .overview-text {
+  margin-bottom: 0.6rem;
+}
+
+.models-right table tr:nth-child(odd) { background: #fafafa; }
+
 
 .overview-text {
   font-size: var(--font-size-lg);

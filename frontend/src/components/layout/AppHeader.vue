@@ -4,7 +4,7 @@ import { RouterLink, useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useAppStore } from '../../store/appStore'
 import { useSettingsStore } from '../../store/settingsStore'
-import { Utensils } from 'lucide-vue-next'
+// Use uploaded SVG logo instead of icon font
 
 const route = useRoute()
 const { t, locale } = useI18n()
@@ -41,7 +41,7 @@ const navItems = computed(() => [
       <div class="header-left">
         <RouterLink to="/" class="logo-link">
           <div class="logo-icon-container">
-            <Utensils :size="24" :stroke-width="2.5" />
+            <img src="/icons/logotransparent.svg" alt="MzeeChakula" style="height:36px; width:auto;" />
           </div>
           <span class="logo-text">{{ t('app.name') }}</span>
         </RouterLink>

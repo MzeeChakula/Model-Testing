@@ -11,8 +11,8 @@ const STATIC_ASSETS = [
   '/',
   '/index.html',
   '/manifest.json',
-  '/icons/icon-192x192.png',
-  '/icons/icon-512x512.png'
+  '/icons/pwa-192x192.png',
+  '/icons/pwa-512x512.png'
 ]
 
 // Maximum cache sizes
@@ -202,7 +202,7 @@ self.addEventListener('push', (event) => {
   const options = {
     body: event.data ? event.data.text() : 'New update available',
     icon: '/icons/icon-192x192.png',
-    badge: '/icons/icon-96x96.png',
+    badge: '/icons/pwa-64x64.png',
     vibrate: [200, 100, 200],
     data: {
       dateOfArrival: Date.now(),
@@ -212,12 +212,12 @@ self.addEventListener('push', (event) => {
       {
         action: 'explore',
         title: 'Open App',
-        icon: '/icons/icon-96x96.png'
+        icon: '/icons/pwa-64x64.png'
       },
       {
         action: 'close',
         title: 'Close',
-        icon: '/icons/icon-96x96.png'
+        icon: '/icons/pwa-64x64.png'
       }
     ]
   }

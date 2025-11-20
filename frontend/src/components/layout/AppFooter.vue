@@ -1,6 +1,6 @@
 <script setup>
 import { useI18n } from 'vue-i18n'
-import { Utensils } from 'lucide-vue-next'
+// Use uploaded SVG logo for footer branding
 
 const { t } = useI18n()
 const currentYear = new Date().getFullYear()
@@ -13,7 +13,7 @@ const currentYear = new Date().getFullYear()
         <div class="footer-section">
           <div class="footer-logo">
             <div class="footer-logo-icon">
-              <Utensils :size="32" :stroke-width="2.5" />
+              <img src="/icons/logotransparent.svg" alt="MzeeChakula" style="height:40px; width:auto;" />
             </div>
             <h3>{{ t('app.name') }}</h3>
           </div>

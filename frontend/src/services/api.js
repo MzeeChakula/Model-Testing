@@ -66,7 +66,7 @@ export const apiService = {
   },
 
   // Predictions
-  async predict(inputData, model = 'auto') {
+  async predict(inputData, model = 'huggingface') {
     const response = await api.post('/predict/', inputData, {
       params: { model }
     })

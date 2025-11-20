@@ -48,7 +48,7 @@ const prevStep = () => {
 
 const submitPrediction = async () => {
   try {
-    const modelPref = settingsStore.offlineMode ? 'offline' : settingsStore.modelPreference
+    const modelPref = settingsStore.offlineMode ? 'offline' : (settingsStore.modelPreference || 'huggingface')
 
     await predictionStore.predict(combinedData.value, modelPref)
 

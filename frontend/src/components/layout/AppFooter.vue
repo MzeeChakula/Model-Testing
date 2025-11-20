@@ -1,8 +1,5 @@
 <script setup>
-import { useI18n } from 'vue-i18n'
 // Use uploaded SVG logo for footer branding
-
-const { t } = useI18n()
 const currentYear = new Date().getFullYear()
 </script>
 
@@ -15,33 +12,36 @@ const currentYear = new Date().getFullYear()
             <div class="footer-logo-icon">
               <img src="/icons/logotransparent.svg" alt="MzeeChakula" style="height:40px; width:auto;" />
             </div>
-            <h3>{{ t('app.name') }}</h3>
+            <h3>MzeeChakula Model Testing</h3>
           </div>
-          <p>{{ t('app.subtitle') }}</p>
+          <p>Repository and testing environment for trained GNN models, embeddings and the production ensemble.</p>
         </div>
 
         <div class="footer-section">
           <h4>About</h4>
           <p class="footer-text">
-            AI-powered nutrition planning for elderly care using graph-enhanced LLMs
-            and locally sourced Ugandan foods.
+            Model testing and evaluation for MzeeChakula: Graph Neural Networks, knowledge-graph reasoning and ensemble
+            recommendations tailored for elderly nutrition in Uganda.
+          </p>
+          <p class="footer-text" style="margin-top:0.6rem;">
+            Production ensemble: <a class="hf-link" href="https://huggingface.co/Shakiran/MzeeChakulaNutritionEnsembleModel" target="_blank" rel="noopener">Shakiran/MzeeChakulaNutritionEnsembleModel</a>
           </p>
         </div>
 
         <div class="footer-section">
           <h4>Technology</h4>
           <ul class="footer-links">
-            <li>XGBoost ML Model</li>
-            <li>Knowledge Graph Reasoning</li>
+            <li>Graph Neural Networks (CRGN, HetGNN, GAT)</li>
+            <li>Ensemble deployment (Hugging Face)</li>
+            <li>Embeddings &amp; Git LFS</li>
             <li>Offline-First Design</li>
-            <li>Mobile Optimized</li>
           </ul>
         </div>
       </div>
 
       <div class="footer-bottom">
-        <p>&copy; {{ currentYear }} MzeeChakula. Research Project - Uganda</p>
-        <p class="footer-tagline">{{ t('app.tagline') }}</p>
+        <p>&copy; {{ currentYear }} MzeeChakula — Model Testing</p>
+        <p class="footer-tagline">Models &amp; ensemble testing · Version 2.1.0</p>
       </div>
     </div>
   </footer>
@@ -149,5 +149,15 @@ const currentYear = new Date().getFullYear()
   font-style: italic;
   color: var(--secondary-color);
   font-weight: 500;
+}
+
+/* Make footer links (external) use white so they are readable on the gradient */
+.footer-text a, .hf-link {
+  color: #ffffff;
+  text-decoration: underline;
+}
+
+.footer-text a:hover, .hf-link:hover {
+  opacity: 0.9;
 }
 </style>

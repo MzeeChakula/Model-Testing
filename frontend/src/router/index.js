@@ -40,18 +40,6 @@ const router = createRouter({
       meta: { title: 'Settings' }
     },
     {
-      path: '/pricing',
-      name: 'pricing',
-      component: () => import('../views/PricingView.vue'),
-      meta: { title: 'Pricing Plans' }
-    },
-    {
-      path: '/contact',
-      name: 'contact',
-      component: () => import('../views/ContactView.vue'),
-      meta: { title: 'Contact Us' }
-    },
-    {
       path: '/history',
       name: 'history',
       component: () => import('../views/HistoryView.vue'),

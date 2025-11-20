@@ -4,16 +4,15 @@ import { useI18n } from 'vue-i18n'
 import { useSettingsStore } from '../store/settingsStore'
 import { usePredictionStore } from '../store/predictionStore'
 
-const { t, locale } = useI18n()
+// i18n language switching removed; keep static/default language
+const { t } = useI18n()
+const locale = ref('en')
 const settingsStore = useSettingsStore()
 const predictionStore = usePredictionStore()
 
 const showClearConfirm = ref(false)
 
-const changeLanguage = (lang) => {
-  locale.value = lang
-  settingsStore.setLanguage(lang)
-}
+
 
 const changeModelPreference = (pref) => {
   settingsStore.setModelPreference(pref)
@@ -33,39 +32,7 @@ const clearAllData = () => {
         <p>Customize your MzeeChakula experience</p>
       </div>
 
-      <!-- Language Settings -->
-      <div class="settings-section card">
-        <h2><i class="pi pi-globe"></i> {{ t('settings.language') }}</h2>
-        <div class="setting-group">
-          <button
-            @click="changeLanguage('en')"
-            class="setting-option"
-            :class="{ active: locale === 'en' }"
-          >
-            <div class="option-content">
-              <i class="pi pi-check-circle"></i>
-              <div>
-                <strong>English</strong>
-                <span>Interface in English language</span>
-              </div>
-            </div>
-          </button>
-
-          <button
-            @click="changeLanguage('lg')"
-            class="setting-option"
-            :class="{ active: locale === 'lg' }"
-          >
-            <div class="option-content">
-              <i class="pi pi-check-circle"></i>
-              <div>
-                <strong>Luganda</strong>
-                <span>Eby'okukozesa mu Luganda</span>
-              </div>
-            </div>
-          </button>
-        </div>
-      </div>
+      <!-- Language settings removed; app runs in single default language -->
 
       <!-- Model Preference -->
       <div class="settings-section card">

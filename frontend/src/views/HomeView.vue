@@ -1,29 +1,26 @@
 <script setup>
-import { ref, computed, onMounted, watch } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { useAppStore } from '../store/appStore'
 import { usePredictionStore } from '../store/predictionStore'
 
 const router = useRouter()
 const { t } = useI18n()
-const appStore = useAppStore()
 const predictionStore = usePredictionStore()
 
-// Make totalPredictions reactive to predictionStore
-const totalPredictions = computed(() => predictionStore.predictionHistory.length || 0)
+const modelAccuracies = [
+  { name: 'CRGN', value: 63.36 },
+  { name: 'HetGNN', value: 56.64 },
+  { name: 'GAT', value: 63.73 }
+]
 
-const stats = ref({
-  totalPredictions: 0,
-  modelsAvailable: 5, // Default to 5 models (XGBoost, LightGBM, HistGradient, GNN, MLP)
-  avgAccuracy: 67 // XGBoost test R² score of 67.1% (best model)
-})
+const currentModelIndex = ref(0)
+const currentAccuracy = ref(63)
+const modelsAvailable = ref(5)
+const totalPredictions = computed(() => predictionStore.predictionHistory.length)
+const currentModelName = computed(() => modelAccuracies[currentModelIndex.value].name)
 
-const animatedStats = ref({
-  totalPredictions: 0,
-  modelsAvailable: 0,
-  avgAccuracy: 0
-})
+let intervalId = null
 
 const features = computed(() => [
   {
@@ -52,53 +49,15 @@ const features = computed(() => [
   }
 ])
 
-// Animate numbers from 0 to target value
-const animateValue = (key, target, duration = 2000) => {
-  const increment = target / (duration / 16)
-  let current = 0
-
-  const timer = setInterval(() => {
-    current += increment
-    if (current >= target) {
-      animatedStats.value[key] = target
-      clearInterval(timer)
-    } else {
-      animatedStats.value[key] = Math.floor(current)
-    }
-  }, 16)
-}
-
 onMounted(() => {
-  // Calculate stats
-  stats.value.totalPredictions = totalPredictions.value
-
-  // Update from store if available, otherwise use defaults
-  if (appStore.availableModels && appStore.availableModels.length > 0) {
-    stats.value.modelsAvailable = appStore.availableModels.length
-  }
-
-  if (appStore.modelStatus && Object.keys(appStore.modelStatus).length > 0) {
-    const models = Object.values(appStore.modelStatus)
-    const avgR2 = models.reduce((sum, model) => {
-      return sum + (model.test_r2 || 0)
-    }, 0) / models.length
-    if (avgR2 > 0) {
-      stats.value.avgAccuracy = Math.round(avgR2 * 100)
-    }
-  }
-
-  // Always animate stats (use defaults if not updated from store)
-  setTimeout(() => {
-    animateValue('avgAccuracy', stats.value.avgAccuracy, 2000)
-    animateValue('modelsAvailable', stats.value.modelsAvailable, 1500)
-    animateValue('totalPredictions', stats.value.totalPredictions, 1800)
-  }, 300)
+  intervalId = setInterval(() => {
+    currentModelIndex.value = (currentModelIndex.value + 1) % modelAccuracies.length
+    currentAccuracy.value = Math.round(modelAccuracies[currentModelIndex.value].value)
+  }, 3000)
 })
 
-// Watch for changes in prediction count and update animated value
-watch(totalPredictions, (newCount) => {
-  stats.value.totalPredictions = newCount
-  animatedStats.value.totalPredictions = newCount
+onUnmounted(() => {
+  if (intervalId) clearInterval(intervalId)
 })
 
 const goToPredict = () => {
@@ -121,7 +80,7 @@ const goToFoods = () => {
             <span>{{ t('app.name') }}</span>
           </div>
 
-          <h1 class="hero-title">{{ t('home.welcome') }}</h1>
+          <h1 class="hero-title">Welcome to MzeeChakula Model Testing</h1>
 
           <p class="hero-description">
             {{ t('home.description') }}
@@ -140,24 +99,24 @@ const goToFoods = () => {
 
           <!-- Quick Stats -->
           <div class="quick-stats">
-            <div class="stat-item animate-fade-in" style="animation-delay: 0.2s;">
+            <div class="stat-item" style="animation: fadeIn 0.8s ease-out 0.2s both;">
               <i class="pi pi-chart-line"></i>
               <div class="stat-content">
-                <div class="stat-value">{{ animatedStats.avgAccuracy }}%</div>
-                <div class="stat-label">Model Accuracy (R²)</div>
+                <div class="stat-value">{{ currentAccuracy }}%</div>
+                <div class="stat-label">Model Accuracy — <small style="opacity:0.9">{{ currentModelName }}</small></div>
               </div>
             </div>
-            <div class="stat-item animate-fade-in" style="animation-delay: 0.4s;">
+            <div class="stat-item" style="animation: fadeIn 0.8s ease-out 0.4s both;">
               <i class="pi pi-server"></i>
               <div class="stat-content">
-                <div class="stat-value">{{ animatedStats.modelsAvailable }}</div>
+                <div class="stat-value">{{ modelsAvailable }}</div>
                 <div class="stat-label">Models Available</div>
               </div>
             </div>
-            <div class="stat-item animate-fade-in" style="animation-delay: 0.6s;">
+            <div class="stat-item" style="animation: fadeIn 0.8s ease-out 0.6s both;">
               <i class="pi pi-history"></i>
               <div class="stat-content">
-                <div class="stat-value">{{ animatedStats.totalPredictions }}</div>
+                <div class="stat-value">{{ totalPredictions }}</div>
                 <div class="stat-label">Your Predictions</div>
               </div>
             </div>
@@ -416,6 +375,16 @@ model_path = snapshot_download("Shakiran/MzeeChakulaNutritionEnsembleModel")
 .stat-value {
   font-size: var(--font-size-xl);
   font-weight: 700;
+  transition: all 0.3s ease;
+}
+
+/* Ensure stat numbers are visible on the hero background */
+.hero-section .stat-value {
+  color: white;
+}
+
+.hero-section .stat-label {
+  color: rgba(255,255,255,0.9);
 }
 
 .stat-label {
@@ -717,11 +686,6 @@ model_path = snapshot_download("Shakiran/MzeeChakulaNutritionEnsembleModel")
   }
 }
 
-.animate-fade-in {
-  animation: fadeIn 0.8s ease-out forwards;
-  opacity: 0;
-}
-
 .hero-content {
   animation: fadeInUp 1s ease-out;
 }
@@ -732,51 +696,5 @@ model_path = snapshot_download("Shakiran/MzeeChakulaNutritionEnsembleModel")
 
 .illustration-card {
   animation: pulse 3s ease-in-out infinite;
-}
-
-.feature-card {
-  animation: fadeInUp 0.6s ease-out forwards;
-  opacity: 0;
-}
-
-.feature-card:nth-child(1) {
-  animation-delay: 0.1s;
-}
-
-.feature-card:nth-child(2) {
-  animation-delay: 0.2s;
-}
-
-.feature-card:nth-child(3) {
-  animation-delay: 0.3s;
-}
-
-.feature-card:nth-child(4) {
-  animation-delay: 0.4s;
-}
-
-.step-card {
-  animation: fadeInUp 0.6s ease-out forwards;
-  opacity: 0;
-}
-
-.step-card:nth-child(1) {
-  animation-delay: 0.2s;
-}
-
-.step-card:nth-child(2) {
-  animation-delay: 0.3s;
-}
-
-.step-card:nth-child(3) {
-  animation-delay: 0.4s;
-}
-
-.step-card:nth-child(4) {
-  animation-delay: 0.5s;
-}
-
-.cta-card {
-  animation: fadeInUp 0.8s ease-out;
 }
 </style>

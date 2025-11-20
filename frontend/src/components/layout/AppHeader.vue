@@ -17,11 +17,6 @@ const toggleMobileMenu = () => {
   mobileMenuOpen.value = !mobileMenuOpen.value
 }
 
-const toggleLanguage = () => {
-  const newLang = locale.value === 'en' ? 'lg' : 'en'
-  locale.value = newLang
-  settingsStore.setLanguage(newLang)
-}
 
 const navItems = computed(() => [
   { path: '/', name: 'home', icon: 'pi pi-home', label: t('nav.home') },
@@ -29,8 +24,7 @@ const navItems = computed(() => [
   { path: '/chat', name: 'chat', icon: 'pi pi-comments', label: t('nav.chat') || 'Chat' },
   { path: '/foods', name: 'foods', icon: 'pi pi-book', label: t('nav.foods') },
   { path: '/history', name: 'history', icon: 'pi pi-history', label: t('nav.history') || 'History' },
-  { path: '/pricing', name: 'pricing', icon: 'pi pi-tag', label: t('nav.pricing') || 'Pricing' },
-  { path: '/contact', name: 'contact', icon: 'pi pi-envelope', label: t('nav.contact') || 'Contact' },
+  
   { path: '/settings', name: 'settings', icon: 'pi pi-cog', label: t('nav.settings') }
 ])
 </script>
@@ -73,15 +67,7 @@ const navItems = computed(() => [
           </span>
         </div>
 
-        <!-- Language Toggle -->
-        <button
-          @click="toggleLanguage"
-          class="lang-toggle"
-          :title="locale === 'en' ? 'Switch to Luganda' : 'Switch to English'"
-        >
-          <i class="pi pi-globe"></i>
-          {{ locale === 'en' ? 'EN' : 'LG' }}
-        </button>
+        <!-- Language selection removed (single-language mode) -->
 
         <!-- Mobile Menu Toggle -->
         <button class="mobile-menu-toggle" @click="toggleMobileMenu">

@@ -75,14 +75,16 @@ const microData = computed(() => ({
 const chartOptions = {
   responsive: true,
   maintainAspectRatio: true,
+  aspectRatio: 1.5,
   plugins: {
     legend: {
       position: 'bottom',
       labels: {
-        padding: 15,
+        padding: 10,
         font: {
-          size: 12
-        }
+          size: window.innerWidth < 768 ? 10 : 12
+        },
+        boxWidth: window.innerWidth < 768 ? 12 : 15
       }
     },
     tooltip: {
@@ -100,9 +102,22 @@ const chartOptions = {
 
 const barOptions = {
   ...chartOptions,
+  aspectRatio: window.innerWidth < 768 ? 1 : 1.5,
   scales: {
     y: {
-      beginAtZero: true
+      beginAtZero: true,
+      ticks: {
+        font: {
+          size: window.innerWidth < 768 ? 10 : 12
+        }
+      }
+    },
+    x: {
+      ticks: {
+        font: {
+          size: window.innerWidth < 768 ? 9 : 11
+        }
+      }
     }
   }
 }
@@ -162,6 +177,17 @@ const barOptions = {
   max-width: 400px;
   margin: 0 auto;
   padding: var(--spacing-md);
+}
+
+@media (max-width: 768px) {
+  .chart-container {
+    max-width: 100%;
+    padding: var(--spacing-sm);
+  }
+  
+  .chart-section {
+    padding: var(--spacing-md);
+  }
 }
 
 .chart-note {

@@ -14,7 +14,7 @@ export const usePredictionStore = defineStore('prediction', () => {
   const recError = ref(null)
 
   // Actions
-  async function predict(inputData, modelPreference = 'auto') {
+  async function predict(inputData, modelPreference = 'huggingface') {
     try {
       loading.value = true
       error.value = null

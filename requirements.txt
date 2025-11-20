@@ -1,0 +1,219 @@
+# Mzee Chakula 2025 Enhanced Requirements
+# State-of-the-art ML dependencies for elderly nutrition planning
+
+# Core ML Libraries
+numpy
+pandas
+scikit-learn
+scipy
+
+# Enhanced Baseline Models
+catboost
+pytorch-tabnet
+xgboost
+lightgbm
+
+# Hyperparameter Optimization
+optuna
+hyperopt
+ray[tune]
+
+# Deep Learning & PyTorch
+torch
+# torchvision  # GPU-specific, commented out for CPU-only installation
+# torchaudio   # GPU-specific, commented out for CPU-only installation
+
+# Graph Neural Networks
+torch-geometric
+# torch-scatter    # GPU-specific, requires CUDA - commented out
+# torch-sparse     # GPU-specific, requires CUDA - commented out
+# torch-cluster    # GPU-specific, requires CUDA - commented out
+# torch-spline-conv# GPU-specific, requires CUDA - commented out
+
+# Enhanced LLM Fine-tuning
+transformers
+peft
+# bitsandbytes     # 4-bit quantization - GPU only, commented out for CPU
+accelerate
+# trl              # Transformer RL - has CUDA dependencies
+datasets
+
+# Advanced Evaluation & Monitoring
+shap
+fairlearn
+# alibi-detect     # TensorFlow dependency
+# codecarbon       # optional
+# wandb            # optional
+# mlflow           # optional
+
+# Visualization & Plotting
+matplotlib
+seaborn
+plotly
+networkx
+
+# Text Processing & NLP
+nltk
+rouge-score
+evaluate
+sentence-transformers
+
+# Data Processing & Storage
+openpyxl
+xlrd
+h5py
+pyarrow
+
+# Web Framework & API (for deployment)
+fastapi
+uvicorn
+pydantic
+streamlit
+
+# Utilities & System
+tqdm
+joblib
+psutil
+python-dotenv
+click
+
+# Testing & Quality
+pytest
+pytest-cov
+black
+flake8
+mypy
+
+# Jupyter & Development
+jupyter
+jupyterlab
+ipywidgets
+notebook
+
+# Optional: Advanced Optimizations (commented)
+# onnx
+# onnxruntime
+# tensorrt
+# intel-extension-for-pytorch
+
+# Optional: Cloud & Deployment (commented)
+# boto3
+# google-cloud-storage
+# azure-storage-blob
+
+# Development & Documentation
+sphinx
+sphinx-rtd-theme
+
+# Note: GPU-specific packages remain commented — install separately if you have CUDA.# Mzee Chakula 2025 Enhanced Requirements
+# State-of-the-art ML dependencies for elderly nutrition planning
+
+# Core ML Libraries
+numpy
+pandas
+scikit-learn
+scipy
+
+# Enhanced Baseline Models
+catboost              # Often outperforms HistGradientBoosting
+pytorch-tabnet        # Deep learning for tabular data
+xgboost               # Alternative gradient boosting
+lightgbm              # Fast gradient boosting
+
+# Hyperparameter Optimization
+optuna                # Advanced hyperparameter tuning
+hyperopt              # Alternative optimization
+ray[tune]             # Distributed hyperparameter tuning
+
+# Deep Learning & PyTorch
+torch                 # Latest PyTorch with torch.compile
+# torchvision         # GPU-specific, commented out for CPU-only installation
+# torchaudio          # GPU-specific, commented out for CPU-only installation
+
+# Graph Neural Networks
+torch-geometric       # Latest PyG with Transformer support
+# torch-scatter       # GPU-specific, requires CUDA - commented out
+# torch-sparse        # GPU-specific, requires CUDA - commented out
+# torch-cluster       # GPU-specific, requires CUDA - commented out
+# torch-spline-conv   # GPU-specific, requires CUDA - commented out
+
+# Enhanced LLM Fine-tuning
+transformers          # Latest Hugging Face Transformers
+peft                  # Parameter Efficient Fine-Tuning with QLoRA
+# bitsandbytes        # 4-bit quantization - GPU only, commented out for CPU
+accelerate            # Distributed training
+# trl                 # Transformer Reinforcement Learning - has CUDA dependencies
+datasets              # Dataset handling
+
+# Advanced Evaluation & Monitoring
+shap                  # Model explainability
+fairlearn             # Bias detection and fairness
+# alibi-detect        # Data drift detection - has TensorFlow dependencies
+# codecarbon          # Carbon footprint tracking - optional
+# wandb               # Experiment tracking - optional
+# mlflow              # ML lifecycle management - optional
+
+# Visualization & Plotting
+matplotlib
+seaborn
+plotly                # Interactive visualizations
+networkx              # Graph visualization
+
+# Text Processing & NLP
+nltk
+rouge-score           # Text generation evaluation
+evaluate              # Hugging Face evaluation metrics
+sentence-transformers # Sentence embeddings
+
+# Data Processing & Storage
+openpyxl              # Excel file handling
+xlrd                  # Excel reading
+h5py                  # HDF5 file format
+pyarrow               # Apache Arrow for fast data processing
+
+# Web Framework & API (for deployment)
+fastapi               # Modern API framework
+uvicorn               # ASGI server
+pydantic              # Data validation
+streamlit             # Quick web apps
+
+# Utilities & System
+tqdm                  # Progress bars
+joblib                # Parallel processing
+psutil                # System monitoring
+python-dotenv         # Environment variables
+click                 # Command line interfaces
+
+# Testing & Quality
+pytest                # Testing framework
+pytest-cov            # Coverage testing
+black                 # Code formatting
+flake8                # Code linting
+mypy                  # Type checking
+
+# Jupyter & Development
+jupyter
+jupyterlab
+ipywidgets            # Interactive widgets
+notebook
+
+# Optional: Advanced Optimizations
+# onnx                # Model optimization
+# onnxruntime         # ONNX runtime
+# tensorrt            # NVIDIA TensorRT (GPU only)
+# intel-extension-for-pytorch  # Intel optimizations
+
+# Optional: Cloud & Deployment
+# boto3               # AWS SDK
+# google-cloud-storage  # Google Cloud
+# azure-storage-blob   # Azure Storage
+
+# Development & Documentation
+sphinx               # Documentation generation
+sphinx-rtd-theme     # ReadTheDocs theme
+
+# Note: Duplicate entries cleaned up
+# GPU-specific packages (torch-scatter, torch-sparse, etc.) are commented out
+# Install them separately if you have CUDA available:
+#   pip install torch-scatter torch-sparse torch-cluster -f https://data.pyg.org/whl/torch-2.1.0+cpu.html
+

@@ -9,18 +9,19 @@ import pytest
 from fastapi.testclient import TestClient
 
 
+class DummyModel:
+    def __init__(self, v, cols=None):
+        self._v = v
+        if cols is not None:
+            # mimic scikit-learn attribute
+            self.feature_names_in_ = cols
+
+    def predict(self, X):
+        # return array-like
+        return [self._v] * len(X)
+
+
 def make_dummy_model(pred_value=123.45, feature_names=None):
-    class DummyModel:
-        def __init__(self, v, cols=None):
-            self._v = v
-            if cols is not None:
-                # mimic scikit-learn attribute
-                self.feature_names_in_ = cols
-
-        def predict(self, X):
-            # return array-like
-            return [self._v] * len(X)
-
     return DummyModel(pred_value, feature_names)
 
 

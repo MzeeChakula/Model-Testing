@@ -45,8 +45,9 @@ async def predict_caloric_needs(
         raise HTTPException(status_code=500, detail="Model loader not initialized")
     
     try:
-        # Convert Pydantic model to dict
-        input_dict = input_data.dict()
+        # Convert Pydantic model to dict (use model_dump for Pydantic v2)
+        # `model_dump` is the v2 replacement for `.dict()` and returns a dict.
+        input_dict = input_data.model_dump()
         
         # Make prediction
         result = model_loader.predict(input_dict, model_preference=model)
@@ -89,7 +90,7 @@ async def batch_predict(
     
     for input_data in batch_input.inputs:
         try:
-            input_dict = input_data.dict()
+            input_dict = input_data.model_dump()
             result = model_loader.predict(input_dict, model_preference=model_pref)
             results.append(result)
             

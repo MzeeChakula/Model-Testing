@@ -515,24 +515,32 @@ onMounted(() => {
 .voice-features-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: var(--spacing-lg);
+  gap: var(--spacing-md);
 }
 
 @media (min-width: 768px) {
   .voice-features-grid {
     grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-lg);
   }
 }
 
 .feature-item {
   display: flex;
-  gap: var(--spacing-md);
+  gap: var(--spacing-sm);
   align-items: flex-start;
   background: white;
-  padding: var(--spacing-lg);
+  padding: var(--spacing-md);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-sm);
   transition: transform 0.2s, box-shadow 0.2s;
+}
+
+@media (min-width: 768px) {
+  .feature-item {
+    gap: var(--spacing-md);
+    padding: var(--spacing-lg);
+  }
 }
 
 .feature-item:hover {
@@ -541,15 +549,23 @@ onMounted(() => {
 }
 
 .feature-icon {
-  width: 60px;
-  height: 60px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  font-size: 1.75rem;
+  font-size: 1.5rem;
   color: white;
+}
+
+@media (min-width: 768px) {
+  .feature-icon {
+    width: 60px;
+    height: 60px;
+    font-size: 1.75rem;
+  }
 }
 
 .feature-icon.microphone {
@@ -568,14 +584,27 @@ onMounted(() => {
 .feature-content h4 {
   margin: 0 0 var(--spacing-xs) 0;
   color: var(--text-color);
-  font-size: var(--font-size-lg);
+  font-size: var(--font-size-base);
+}
+
+@media (min-width: 768px) {
+  .feature-content h4 {
+    font-size: var(--font-size-lg);
+  }
 }
 
 .feature-content p {
   margin: 0;
   color: var(--text-secondary);
-  font-size: var(--font-size-sm);
-  line-height: 1.5;
+  font-size: 0.8rem;
+  line-height: 1.4;
+}
+
+@media (min-width: 768px) {
+  .feature-content p {
+    font-size: var(--font-size-sm);
+    line-height: 1.5;
+  }
 }
 
 @keyframes pulse-icon {
@@ -622,16 +651,5 @@ onMounted(() => {
     font-size: var(--font-size-lg);
   }
 
-  .feature-item {
-    flex-direction: column;
-    text-align: center;
-    align-items: center;
-  }
-
-  .feature-icon {
-    width: 50px;
-    height: 50px;
-    font-size: 1.5rem;
-  }
 }
 </style>

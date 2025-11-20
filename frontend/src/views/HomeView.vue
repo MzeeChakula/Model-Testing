@@ -148,7 +148,7 @@ const goToFoods = () => {
             </p>
 
             <h4>Repository</h4>
-            <ul>
+            <ul class="repo-list">
               <li><strong>models/</strong> — Trained GNNs, checkpoints and embeddings (Git LFS)</li>
               <li><strong>scripts/</strong> — Ensemble utilities & deployment helpers</li>
               <li><strong>notebooks/</strong> — Training and evaluation notebooks</li>
@@ -166,12 +166,14 @@ const goToFoods = () => {
               </div>
             </div>
 
-            <div class="card">
+            <div class="card deployment-card">
               <strong>Deployment</strong>
-              <pre style="background:var(--surface-color); padding:0.6rem; border-radius:6px; overflow:auto; margin-top:0.5rem;">
+              <pre class="deployment-code">
 from huggingface_hub import snapshot_download
-model_path = snapshot_download("Shakiran/MzeeChakulaNutritionEnsembleModel")
-# then load the ensemble from the downloaded snapshot
+model_path = snapshot_download(
+  "Shakiran/MzeeChakulaNutritionEnsembleModel"
+)
+# load the ensemble
               </pre>
             </div>
           </div>
@@ -262,6 +264,11 @@ model_path = snapshot_download("Shakiran/MzeeChakulaNutritionEnsembleModel")
 <style scoped>
 .home-view {
   width: 100%;
+  overflow-x: hidden;
+}
+
+.home-view * {
+  max-width: 100%;
 }
 
 /* Hero Section */
@@ -300,6 +307,12 @@ model_path = snapshot_download("Shakiran/MzeeChakulaNutritionEnsembleModel")
   font-weight: 700;
   margin-bottom: var(--spacing-md);
   line-height: 1.1;
+}
+
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 1.75rem;
+  }
 }
 
 .hero-description {
@@ -409,10 +422,36 @@ model_path = snapshot_download("Shakiran/MzeeChakulaNutritionEnsembleModel")
   box-shadow: var(--shadow-lg);
 }
 
+@media (max-width: 768px) {
+  .illustration-card {
+    width: 200px;
+    height: 200px;
+  }
+  
+  .hero-illustration {
+    display: none;
+  }
+}
+
 /* Overview Section */
 .overview-section {
   padding: var(--spacing-xl) 0;
   background-color: var(--surface-color);
+  overflow-x: hidden;
+}
+
+.overview-section .container {
+  max-width: 1200px;
+  width: 100%;
+  padding-left: var(--spacing-md);
+  padding-right: var(--spacing-md);
+  box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+  .overview-section .container {
+    max-width: 100vw;
+  }
 }
 
 .overview-content {
@@ -440,6 +479,8 @@ model_path = snapshot_download("Shakiran/MzeeChakulaNutritionEnsembleModel")
   padding: var(--spacing-lg);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-sm);
+  overflow-x: hidden;
+  word-wrap: break-word;
 }
 
 .model-card.small {
@@ -452,6 +493,87 @@ model_path = snapshot_download("Shakiran/MzeeChakulaNutritionEnsembleModel")
 
 .models-right table tr:nth-child(odd) { background: #fafafa; }
 
+@media (max-width: 768px) {
+  .model-card {
+    padding: var(--spacing-sm);
+  }
+  
+  .model-card ul {
+    padding-left: var(--spacing-md);
+  }
+  
+  .model-card ul li {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+  
+  .model-card h3 {
+    font-size: var(--font-size-lg);
+  }
+  
+  .model-card h4 {
+    font-size: var(--font-size-base);
+  }
+  
+  .models-right table {
+    font-size: 0.7rem;
+    display: block;
+    overflow-x: auto;
+    width: 100%;
+  }
+  
+  .models-right > div {
+    overflow-x: auto;
+    max-width: 100%;
+  }
+  
+  .models-right table th,
+  .models-right table td {
+    padding: 6px !important;
+    white-space: nowrap;
+  }
+  
+  .model-card pre {
+    font-size: 0.65rem;
+    padding: 0.4rem !important;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    word-break: break-all;
+  }
+  
+  .overview-section .container {
+    padding-left: var(--spacing-sm);
+    padding-right: var(--spacing-sm);
+  }
+  
+  .models-grid {
+    gap: var(--spacing-md);
+  }
+  
+  .overview-text {
+    font-size: var(--font-size-base);
+  }
+  
+  .card {
+    overflow-x: hidden;
+  }
+  
+  .deployment-card {
+    max-width: 100%;
+  }
+  
+  .deployment-code {
+    max-width: 100%;
+    overflow-x: auto !important;
+    font-size: 0.6rem !important;
+    line-height: 1.4;
+  }
+  
+  .repo-list li {
+    font-size: var(--font-size-sm);
+  }
+}
+
 
 .overview-text {
   font-size: var(--font-size-lg);
@@ -459,6 +581,8 @@ model_path = snapshot_download("Shakiran/MzeeChakulaNutritionEnsembleModel")
   line-height: 1.8;
   margin-bottom: var(--spacing-lg);
   text-align: left;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .overview-features {
@@ -468,9 +592,16 @@ model_path = snapshot_download("Shakiran/MzeeChakulaNutritionEnsembleModel")
   margin-top: var(--spacing-xl);
 }
 
+@media (max-width: 768px) {
+  .overview-features {
+    grid-template-columns: 1fr;
+  }
+}
+
 .overview-badge {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: var(--spacing-sm);
   padding: var(--spacing-md);
   background: white;
@@ -502,6 +633,12 @@ model_path = snapshot_download("Shakiran/MzeeChakulaNutritionEnsembleModel")
   font-size: var(--font-size-2xl);
   color: var(--text-color);
   margin-bottom: var(--spacing-xl);
+}
+
+@media (max-width: 768px) {
+  .section-title {
+    font-size: var(--font-size-xl);
+  }
 }
 
 .features-grid {
@@ -558,62 +695,88 @@ model_path = snapshot_download("Shakiran/MzeeChakulaNutritionEnsembleModel")
 .how-it-works-section {
   padding: var(--spacing-xl) 0;
   background-color: var(--surface-color);
+  overflow-x: hidden;
 }
 
 .steps-grid {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--spacing-lg);
-}
-
-@media (min-width: 768px) {
-  .steps-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-md);
 }
 
 @media (min-width: 1024px) {
   .steps-grid {
-    grid-template-columns: repeat(4, 1fr);
+    gap: var(--spacing-lg);
   }
 }
 
 .step-card {
   background: white;
-  padding: var(--spacing-xl);
-  border-radius: var(--radius-lg);
+  padding: var(--spacing-md);
+  border-radius: var(--radius-md);
   text-align: center;
   box-shadow: var(--shadow-sm);
 }
 
+@media (min-width: 1024px) {
+  .step-card {
+    padding: var(--spacing-lg);
+  }
+}
+
 .step-number {
-  width: 60px;
-  height: 60px;
+  width: 48px;
+  height: 48px;
   background: var(--primary-color);
   color: white;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: var(--font-size-xl);
+  font-size: var(--font-size-lg);
   font-weight: 700;
-  margin: 0 auto var(--spacing-md);
+  margin: 0 auto var(--spacing-sm);
+}
+
+@media (min-width: 1024px) {
+  .step-number {
+    width: 60px;
+    height: 60px;
+    font-size: var(--font-size-xl);
+    margin: 0 auto var(--spacing-md);
+  }
 }
 
 .step-card h3 {
-  font-size: var(--font-size-lg);
-  margin-bottom: var(--spacing-sm);
+  font-size: var(--font-size-base);
+  margin-bottom: var(--spacing-xs);
   color: var(--text-color);
+}
+
+@media (min-width: 1024px) {
+  .step-card h3 {
+    font-size: var(--font-size-lg);
+    margin-bottom: var(--spacing-sm);
+  }
 }
 
 .step-card p {
   color: var(--text-secondary);
-  line-height: 1.6;
+  line-height: 1.5;
+  font-size: var(--font-size-sm);
+}
+
+@media (min-width: 1024px) {
+  .step-card p {
+    font-size: var(--font-size-base);
+    line-height: 1.6;
+  }
 }
 
 /* CTA Section */
 .cta-section {
   padding: var(--spacing-xl) 0;
+  overflow-x: hidden;
 }
 
 .cta-card {
@@ -628,6 +791,16 @@ model_path = snapshot_download("Shakiran/MzeeChakulaNutritionEnsembleModel")
 .cta-card h2 {
   font-size: var(--font-size-2xl);
   margin-bottom: var(--spacing-md);
+}
+
+@media (max-width: 768px) {
+  .cta-card h2 {
+    font-size: var(--font-size-xl);
+  }
+  
+  .cta-card {
+    padding: var(--spacing-lg);
+  }
 }
 
 .cta-card p {

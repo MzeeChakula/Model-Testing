@@ -20,6 +20,13 @@ const hasPrediction = computed(() => {
 
 const prediction = computed(() => predictionStore.currentPrediction)
 const inputData = computed(() => predictionStore.currentInput)
+const recommendedFoods = computed(() => {
+  const pred = predictionStore.currentPrediction
+  if (pred && pred.recommendedFoods && Array.isArray(pred.recommendedFoods) && pred.recommendedFoods.length) {
+    return pred.recommendedFoods
+  }
+  return predictionStore.recommendations || []
+})
 
 // Redirect to predict if no data
 onMounted(() => {
@@ -48,6 +55,14 @@ const printResults = () => {
           <p class="header-subtitle">
             Your personalized nutrition analysis and meal planning guide
           </p>
+        </div>
+        <div class="header-recommendations" v-if="recommendedFoods && recommendedFoods.length">
+          <div class="rec-label">Top local foods:</div>
+          <div class="rec-list">
+            <span v-for="(f, idx) in recommendedFoods.slice(0,6)" :key="(f.id||f.meta?.name||idx)" class="rec-chip">
+              {{ f.meta?.name || f.meta?.title || f.id }}
+            </span>
+          </div>
         </div>
         <div class="header-actions no-print">
           <button @click="printResults" class="btn btn-secondary">
@@ -443,6 +458,31 @@ const printResults = () => {
 .no-data-card p {
   color: var(--text-secondary);
   margin-bottom: var(--spacing-xl);
+}
+
+.header-recommendations {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  margin-left: auto;
+}
+.header-recommendations .rec-label {
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-right: var(--spacing-sm);
+}
+.header-recommendations .rec-list {
+  display: flex;
+  gap: var(--spacing-sm);
+  flex-wrap: wrap;
+}
+.rec-chip {
+  background: var(--surface-color);
+  border: 1px solid var(--border-color);
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 0.875rem;
+  color: var(--text-color);
 }
 
 /* Print Styles */

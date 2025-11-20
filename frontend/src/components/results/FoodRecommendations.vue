@@ -13,12 +13,23 @@ const items = ref([])
 const loading = ref(false)
 const error = ref(null)
 
+// If store already has recommendations (e.g., fetched automatically after prediction), use them
+if (store.recommendations && store.recommendations.length) {
+  items.value = store.recommendations
+}
+
+// keep items in sync if the store recommendations update later
+watch(() => store.recommendations, (val) => {
+  if (val && val.length) items.value = val
+})
+
 async function load() {
   try {
     loading.value = true
     error.value = null
     const res = await store.fetchRecommendations(props.inputData, 6)
-    items.value = res || []
+    // fetchRecommendations returns an array (and stores into store.recommendations)
+    items.value = res || store.recommendations || []
   } catch (err) {
     error.value = err.message || String(err)
   } finally {

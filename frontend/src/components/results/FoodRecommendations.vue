@@ -26,13 +26,13 @@ async function load() {
   }
 }
 
-onMounted(() => {
-  if (props.inputData) load()
-})
-
-watch(() => props.inputData, (n) => {
-  if (n) load()
-})
+function onClickGet() {
+  if (!props.inputData) {
+    error.value = t('results.noInput') || 'No input data available to build recommendations.'
+    return
+  }
+  load()
+}
 </script>
 
 <template>
@@ -41,6 +41,13 @@ watch(() => props.inputData, (n) => {
       <i class="pi pi-utensils"></i>
       {{ t('results.recommendations') || 'Recommended Local Foods' }}
     </h2>
+
+    <div class="rec-controls">
+      <button class="btn btn-primary" @click="onClickGet">
+        <i class="pi pi-search"></i>
+        {{ t('results.getRecommendations') || 'Get Recommendations' }}
+      </button>
+    </div>
 
     <div v-if="loading" class="loading">Loading recommendations...</div>
     <div v-else-if="error" class="error">{{ error }}</div>

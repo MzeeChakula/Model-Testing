@@ -6,6 +6,7 @@ import { usePredictionStore } from '../store/predictionStore'
 import NutrientChart from '../components/results/NutrientChart.vue'
 import HealthRecommendations from '../components/results/HealthRecommendations.vue'
 import MealPlanSuggestions from '../components/results/MealPlanSuggestions.vue'
+import FoodRecommendations from '../components/results/FoodRecommendations.vue'
 import CostCalculator from '../components/results/CostCalculator.vue'
 
 const router = useRouter()
@@ -118,6 +119,9 @@ const printResults = () => {
           :condition="inputData.condition_encoded"
         />
       </div>
+
+      <!-- Food Recommendations -->
+      <FoodRecommendations :inputData="inputData" />
 
       <!-- Cost Calculator -->
       <div class="section-card">

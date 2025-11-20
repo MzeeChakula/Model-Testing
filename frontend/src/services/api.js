@@ -86,6 +86,18 @@ export const apiService = {
     return response.data
   },
 
+  async getRecommendations({ byId = null, vector = null, top_k = 5 } = {}) {
+    const params = { top_k }
+    if (byId) params.by_id = byId
+    if (vector && Array.isArray(vector)) {
+      // join vector as comma-separated string expected by backend
+      params.vector = vector.join(',')
+    }
+
+    const response = await api.get('/predict/recommend', { params })
+    return response.data
+  },
+
   // Monitoring
   async getSystemMetrics() {
     const response = await api.get('/metrics')

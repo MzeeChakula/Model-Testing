@@ -9,6 +9,9 @@ export const usePredictionStore = defineStore('prediction', () => {
   const predictionHistory = ref([])
   const loading = ref(false)
   const error = ref(null)
+  const recommendations = ref([])
+  const recLoading = ref(false)
+  const recError = ref(null)
 
   // Actions
   async function predict(inputData, modelPreference = 'auto') {
@@ -60,6 +63,47 @@ export const usePredictionStore = defineStore('prediction', () => {
     }
   }
 
+  async function fetchRecommendations(inputData, top_k = 5) {
+    try {
+      recLoading.value = true
+      recError.value = null
+
+      // Build a simple vector from available nutrition fields in a canonical order
+      const keys = [
+        'Energy_kcal_per_serving',
+        'Protein_g_per_serving',
+        'Fat_g_per_serving',
+        'Carbohydrates_g_per_serving',
+        'Fiber_g_per_serving',
+        'Calcium_mg_per_serving',
+        'Iron_mg_per_serving',
+        'Magnesium_mg_per_serving',
+        'Phosphorus_mg_per_serving',
+        'Potassium_mg_per_serving',
+        'Sodium_mg_per_serving',
+        'Zinc_mg_per_serving',
+        'VitaminA_ug_per_serving',
+        'VitaminC_mg_per_serving'
+      ]
+
+      const vector = keys.map((k) => (inputData && inputData[k] != null ? Number(inputData[k]) : 0))
+
+      const result = await apiService.getRecommendations({ vector, top_k })
+      if (result && result.success) {
+        recommendations.value = result.items || []
+        return recommendations.value
+      } else {
+        recError.value = (result && result.error) || 'Recommendation failed'
+        return []
+      }
+    } catch (err) {
+      recError.value = err.message || String(err)
+      throw err
+    } finally {
+      recLoading.value = false
+    }
+  }
+
   function clearCurrent() {
     currentInput.value = null
     currentPrediction.value = null
@@ -97,11 +141,15 @@ export const usePredictionStore = defineStore('prediction', () => {
     currentInput,
     currentPrediction,
     predictionHistory,
+    recommendations,
     loading,
     error,
+    recLoading,
+    recError,
     // Actions
     predict,
     batchPredict,
+    fetchRecommendations,
     clearCurrent,
     clearHistory,
     saveToLocalStorage,

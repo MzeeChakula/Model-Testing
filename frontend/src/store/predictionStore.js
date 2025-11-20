@@ -14,7 +14,7 @@ export const usePredictionStore = defineStore('prediction', () => {
   const recError = ref(null)
 
   // Actions
-  async function predict(inputData, modelPreference = 'huggingface') {
+  async function predict(inputData, modelPreference = 'auto') {
     try {
       loading.value = true
       error.value = null
@@ -189,10 +189,84 @@ export const usePredictionStore = defineStore('prediction', () => {
         return recommendations.value
       }
 
-      // Fallback: choose local foods by region/availability/price when no embedding results
+      // Fallback: if ensemble recommendations are unavailable, score local foods
+      // by cosine similarity against the constructed `vector`. This provides
+      // useful scores instead of defaulting to zero.
       if (localFoods && localFoods.length) {
+        const q = vector && Array.isArray(vector) ? vector.map((v) => Number(v) || 0) : null
+
+        // helper to build a numeric vector from a local food entry matching `keys`
+        const buildFoodVector = (f) => {
+          // local foods expose fields: energy, protein, fat, carbs, fiber, calcium, iron
+          // map them to the canonical keys used for query vector; missing entries -> 0
+          const map = {
+            Energy_kcal_per_serving: Number(f.energy) || 0,
+            Protein_g_per_serving: Number(f.protein) || 0,
+            Fat_g_per_serving: Number(f.fat) || 0,
+            Carbohydrates_g_per_serving: Number(f.carbs) || 0,
+            Fiber_g_per_serving: Number(f.fiber) || 0,
+            Calcium_mg_per_serving: Number(f.calcium) || 0,
+            Iron_mg_per_serving: Number(f.iron) || 0,
+            Magnesium_mg_per_serving: 0,
+            Phosphorus_mg_per_serving: 0,
+            Potassium_mg_per_serving: 0,
+            Sodium_mg_per_serving: 0,
+            Zinc_mg_per_serving: 0,
+            VitaminA_ug_per_serving: 0,
+            VitaminC_mg_per_serving: 0
+          }
+          return keys.map((k) => Number(map[k] || 0))
+        }
+
+        const scored = []
+
+        if (q && q.length) {
+          // compute query norm
+          const qNorm = Math.sqrt(q.reduce((s, v) => s + v * v, 0)) || 1
+
+          for (const f of localFoods) {
+            try {
+              if (typeof f.available !== 'undefined' && f.available === false) continue
+              if (preferredRegion && (f.region || '').toString().toLowerCase() !== preferredRegion) {
+                // allow region filtering but still consider if nothing matches later
+              }
+
+              const fv = buildFoodVector(f)
+              const fNorm = Math.sqrt(fv.reduce((s, v) => s + v * v, 0)) || 1
+              const dot = fv.reduce((s, v, i) => s + (v * (q[i] || 0)), 0)
+              let score = dot / (qNorm * fNorm)
+              if (!isFinite(score)) score = 0
+              // Keep score in 0..1 range (vectors non-negative so typically >=0)
+              score = Math.max(0, Math.min(1, score))
+              scored.push({ id: f.id || f.name, score, meta: f })
+            } catch (e) {
+              // skip problematic entries
+              continue
+            }
+          }
+
+          // If we have scored items, sort and pick top_k
+          if (scored.length) {
+            scored.sort((a, b) => (b.score || 0) - (a.score || 0))
+            let itemsPicked = scored.slice(0, top_k)
+
+            // If budget provided, prefer affordable
+            if (budget) {
+              const affordable = itemsPicked.filter((it) => {
+                const price = (it.meta && (it.meta.pricePerKg || it.meta.price_per_kg || it.meta.price)) || null
+                if (price == null) return true
+                return Number(price) <= Number(budget) * 2
+              })
+              if (affordable.length) itemsPicked = affordable
+            }
+
+            recommendations.value = itemsPicked
+            return recommendations.value
+          }
+        }
+
+        // final fallback: region/availability/price selection (no scoring possible)
         let picks = [...localFoods]
-        // filter by availability if present
         if (picks.some((f) => typeof f.available !== 'undefined')) {
           picks = picks.filter((f) => f.available !== false)
         }
@@ -200,10 +274,8 @@ export const usePredictionStore = defineStore('prediction', () => {
           const inRegion = picks.filter((f) => (f.region || '').toString().toLowerCase() === preferredRegion)
           if (inRegion.length) picks = inRegion
         }
-        // sort by price asc if present
-        picks.sort((a, b) => ( (a.pricePerKg || Number.MAX_SAFE_INTEGER) - (b.pricePerKg || Number.MAX_SAFE_INTEGER) ))
-        picks = picks.slice(0, top_k).map((f) => ({ id: f.name || f.id, score: 0, meta: f }))
-        recommendations.value = picks
+        picks.sort((a, b) => ((a.pricePerKg || Number.MAX_SAFE_INTEGER) - (b.pricePerKg || Number.MAX_SAFE_INTEGER)))
+        recommendations.value = picks.slice(0, top_k).map((f) => ({ id: f.name || f.id, score: 0, meta: f }))
         return recommendations.value
       }
 

@@ -1,6 +1,7 @@
 <script setup>
-import { ref, computed, watch } from 'vue'
+import { ref, computed, watch, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { apiService } from '../../services/api'
 
 const { t } = useI18n()
 
@@ -21,233 +22,70 @@ const formData = ref({
   dietaryRestrictions: props.modelValue.dietaryRestrictions || [],
   budget: props.modelValue.budget || 'moderate'
 })
+// Dynamic local foods loaded from backend
+const localFoods = ref([])
 
-// Ugandan Foods Database with nutritional values
-const ugandanFoods = [
-  {
-    id: 'matooke',
-    name: 'Matooke (Plantain)',
-    category: 'Staples',
-    icon: 'pi pi-circle-fill',
-    Energy_kcal_per_serving: 122,
-    Protein_g_per_serving: 1.3,
-    Fat_g_per_serving: 0.4,
-    Carbohydrates_g_per_serving: 31.9,
-    Fiber_g_per_serving: 2.3,
-    Calcium_mg_per_serving: 3,
-    Iron_mg_per_serving: 0.6,
-    Zinc_mg_per_serving: 0.2,
-    VitaminA_ug_per_serving: 56,
-    VitaminC_mg_per_serving: 18.4,
-    Potassium_mg_per_serving: 499,
-    Magnesium_mg_per_serving: 37
-  },
-  {
-    id: 'posho',
-    name: 'Posho (Maize Meal)',
-    category: 'Staples',
-    icon: 'pi pi-circle-fill',
-    Energy_kcal_per_serving: 357,
-    Protein_g_per_serving: 9.4,
-    Fat_g_per_serving: 3.9,
-    Carbohydrates_g_per_serving: 74.3,
-    Fiber_g_per_serving: 7.3,
-    Calcium_mg_per_serving: 7,
-    Iron_mg_per_serving: 2.7,
-    Zinc_mg_per_serving: 2.2,
-    VitaminA_ug_per_serving: 11,
-    VitaminC_mg_per_serving: 0,
-    Potassium_mg_per_serving: 287,
-    Magnesium_mg_per_serving: 127
-  },
-  {
-    id: 'beans',
-    name: 'Beans',
-    category: 'Proteins',
-    icon: 'pi pi-heart-fill',
-    Energy_kcal_per_serving: 333,
-    Protein_g_per_serving: 21,
-    Fat_g_per_serving: 1.2,
-    Carbohydrates_g_per_serving: 60,
-    Fiber_g_per_serving: 15,
-    Calcium_mg_per_serving: 143,
-    Iron_mg_per_serving: 7.5,
-    Zinc_mg_per_serving: 3.5,
-    VitaminA_ug_per_serving: 0,
-    VitaminC_mg_per_serving: 4.5,
-    Potassium_mg_per_serving: 1406,
-    Magnesium_mg_per_serving: 171
-  },
-  {
-    id: 'groundnuts',
-    name: 'Groundnuts (Peanuts)',
-    category: 'Proteins',
-    icon: 'pi pi-heart-fill',
-    Energy_kcal_per_serving: 567,
-    Protein_g_per_serving: 25.8,
-    Fat_g_per_serving: 49.2,
-    Carbohydrates_g_per_serving: 16.1,
-    Fiber_g_per_serving: 8.5,
-    Calcium_mg_per_serving: 92,
-    Iron_mg_per_serving: 4.6,
-    Zinc_mg_per_serving: 3.3,
-    VitaminA_ug_per_serving: 0,
-    VitaminC_mg_per_serving: 0,
-    Potassium_mg_per_serving: 705,
-    Magnesium_mg_per_serving: 168
-  },
-  {
-    id: 'fish',
-    name: 'Fish (Tilapia/Nile Perch)',
-    category: 'Proteins',
-    icon: 'pi pi-heart-fill',
-    Energy_kcal_per_serving: 128,
-    Protein_g_per_serving: 26,
-    Fat_g_per_serving: 2.7,
-    Carbohydrates_g_per_serving: 0,
-    Fiber_g_per_serving: 0,
-    Calcium_mg_per_serving: 14,
-    Iron_mg_per_serving: 0.6,
-    Zinc_mg_per_serving: 0.4,
-    VitaminA_ug_per_serving: 30,
-    VitaminC_mg_per_serving: 0,
-    Potassium_mg_per_serving: 380,
-    Magnesium_mg_per_serving: 27
-  },
-  {
-    id: 'sukuma',
-    name: 'Sukuma Wiki (Collard Greens)',
-    category: 'Vegetables',
-    icon: 'pi pi-sun',
-    Energy_kcal_per_serving: 32,
-    Protein_g_per_serving: 3,
-    Fat_g_per_serving: 0.6,
-    Carbohydrates_g_per_serving: 5.4,
-    Fiber_g_per_serving: 3.6,
-    Calcium_mg_per_serving: 232,
-    Iron_mg_per_serving: 0.9,
-    Zinc_mg_per_serving: 0.2,
-    VitaminA_ug_per_serving: 380,
-    VitaminC_mg_per_serving: 35,
-    Potassium_mg_per_serving: 213,
-    Magnesium_mg_per_serving: 33
-  },
-  {
-    id: 'nakati',
-    name: 'Nakati (African Eggplant Leaves)',
-    category: 'Vegetables',
-    icon: 'pi pi-sun',
-    Energy_kcal_per_serving: 35,
-    Protein_g_per_serving: 2.8,
-    Fat_g_per_serving: 0.8,
-    Carbohydrates_g_per_serving: 6.2,
-    Fiber_g_per_serving: 4.2,
-    Calcium_mg_per_serving: 280,
-    Iron_mg_per_serving: 3.5,
-    Zinc_mg_per_serving: 0.5,
-    VitaminA_ug_per_serving: 420,
-    VitaminC_mg_per_serving: 42,
-    Potassium_mg_per_serving: 350,
-    Magnesium_mg_per_serving: 45
-  },
-  {
-    id: 'sweetpotato',
-    name: 'Sweet Potato (Orange)',
-    category: 'Staples',
-    icon: 'pi pi-circle-fill',
-    Energy_kcal_per_serving: 86,
-    Protein_g_per_serving: 1.6,
-    Fat_g_per_serving: 0.1,
-    Carbohydrates_g_per_serving: 20.1,
-    Fiber_g_per_serving: 3,
-    Calcium_mg_per_serving: 30,
-    Iron_mg_per_serving: 0.6,
-    Zinc_mg_per_serving: 0.3,
-    VitaminA_ug_per_serving: 709,
-    VitaminC_mg_per_serving: 2.4,
-    Potassium_mg_per_serving: 337,
-    Magnesium_mg_per_serving: 25
-  },
-  {
-    id: 'cassava',
-    name: 'Cassava',
-    category: 'Staples',
-    icon: 'pi pi-circle-fill',
-    Energy_kcal_per_serving: 160,
-    Protein_g_per_serving: 1.4,
-    Fat_g_per_serving: 0.3,
-    Carbohydrates_g_per_serving: 38.1,
-    Fiber_g_per_serving: 1.8,
-    Calcium_mg_per_serving: 16,
-    Iron_mg_per_serving: 0.3,
-    Zinc_mg_per_serving: 0.3,
-    VitaminA_ug_per_serving: 1,
-    VitaminC_mg_per_serving: 20.6,
-    Potassium_mg_per_serving: 271,
-    Magnesium_mg_per_serving: 21
-  },
-  {
-    id: 'milk',
-    name: 'Milk (Fresh)',
-    category: 'Proteins',
-    icon: 'pi pi-heart-fill',
-    Energy_kcal_per_serving: 61,
-    Protein_g_per_serving: 3.2,
-    Fat_g_per_serving: 3.3,
-    Carbohydrates_g_per_serving: 4.7,
-    Fiber_g_per_serving: 0,
-    Calcium_mg_per_serving: 113,
-    Iron_mg_per_serving: 0,
-    Zinc_mg_per_serving: 0.4,
-    VitaminA_ug_per_serving: 46,
-    VitaminC_mg_per_serving: 0,
-    Potassium_mg_per_serving: 143,
-    Magnesium_mg_per_serving: 10
-  },
-  {
-    id: 'eggs',
-    name: 'Eggs',
-    category: 'Proteins',
-    icon: 'pi pi-heart-fill',
-    Energy_kcal_per_serving: 155,
-    Protein_g_per_serving: 13,
-    Fat_g_per_serving: 11,
-    Carbohydrates_g_per_serving: 1.1,
-    Fiber_g_per_serving: 0,
-    Calcium_mg_per_serving: 56,
-    Iron_mg_per_serving: 1.8,
-    Zinc_mg_per_serving: 1.3,
-    VitaminA_ug_per_serving: 160,
-    VitaminC_mg_per_serving: 0,
-    Potassium_mg_per_serving: 138,
-    Magnesium_mg_per_serving: 12
-  },
-  {
-    id: 'tomato',
-    name: 'Tomatoes',
-    category: 'Vegetables',
-    icon: 'pi pi-sun',
-    Energy_kcal_per_serving: 18,
-    Protein_g_per_serving: 0.9,
-    Fat_g_per_serving: 0.2,
-    Carbohydrates_g_per_serving: 3.9,
-    Fiber_g_per_serving: 1.2,
-    Calcium_mg_per_serving: 10,
-    Iron_mg_per_serving: 0.3,
-    Zinc_mg_per_serving: 0.2,
-    VitaminA_ug_per_serving: 42,
-    VitaminC_mg_per_serving: 14,
-    Potassium_mg_per_serving: 237,
-    Magnesium_mg_per_serving: 11
+// UI filters in the food preferences modal
+const searchQuery = ref('')
+const selectedCategory = ref('all')
+const selectedRegion = ref('all')
+const showOnlyAvailable = ref(false)
+const maxPricePerKg = ref(null)
+
+// load local foods from backend and map to canonical fields used by the form
+const loadLocalFoods = async () => {
+  try {
+    const data = await apiService.getLocalFoods()
+    if (Array.isArray(data)) {
+      // Remove duplicates by name
+      const uniqueNames = new Set()
+      const uniqueData = data.filter(f => {
+        const name = f.name || f.title || ''
+        if (uniqueNames.has(name)) return false
+        uniqueNames.add(name)
+        return true
+      })
+      
+      localFoods.value = uniqueData.map((f, idx) => {
+        // Map CSV/backend fields to the canonical nutrition keys used in this form
+        return {
+          // prefer an explicit id if provided by backend; otherwise use generated index
+          id: f.id != null ? String(f.id) : `food_${idx}`,
+          name: f.name || f.title || `Food ${idx}`,
+          category: (f.category || 'other').toString(),
+          region: (f.region || 'all').toString(),
+          available: !!f.available,
+          pricePerKg: Number(f.pricePerKg || f.price_per_kg || f.price || 0),
+          // nutrition keys expected by prediction form
+          Energy_kcal_per_serving: Number(f.energy || f.Energy_kcal_per_serving || 0),
+          Protein_g_per_serving: Number(f.protein || f.Protein_g_per_serving || 0),
+          Fat_g_per_serving: Number(f.fat || f.Fat_g_per_serving || 0),
+          Carbohydrates_g_per_serving: Number(f.carbs || f.Carbohydrates_g_per_serving || 0),
+          Fiber_g_per_serving: Number(f.fiber || f.Fiber_g_per_serving || 0),
+          Calcium_mg_per_serving: Number(f.calcium || f.Calcium_mg_per_serving || 0),
+          Iron_mg_per_serving: Number(f.iron || f.Iron_mg_per_serving || 0),
+          Zinc_mg_per_serving: Number(f.zinc || f.Zinc_mg_per_serving || 0),
+          VitaminA_ug_per_serving: Number(f.vitaminA || f.VitaminA_ug_per_serving || 0),
+          VitaminC_mg_per_serving: Number(f.vitaminC || f.VitaminC_mg_per_serving || 0),
+          Potassium_mg_per_serving: Number(f.potassium || f.Potassium_mg_per_serving || 0),
+          Magnesium_mg_per_serving: Number(f.magnesium || f.Magnesium_mg_per_serving || 0)
+        }
+      })
+    }
+  } catch (err) {
+    console.error('Failed to load local foods for preferences form', err)
   }
-]
+}
 
-// Categories for grouping
-const foodCategories = [
-  { name: 'Staples', icon: 'pi pi-circle-fill', color: '#d90000' },
-  { name: 'Proteins', icon: 'pi pi-heart-fill', color: '#078930' },
-  { name: 'Vegetables', icon: 'pi pi-sun', color: '#fcdc04' }
-]
+onMounted(() => {
+  loadLocalFoods()
+})
+
+// Categories for grouping (derive from data when available)
+const foodCategories = computed(() => {
+  const cats = new Set(localFoods.value.map(f => (f.category || 'Other')))
+  return Array.from(cats).map(name => ({ name, icon: 'pi pi-circle-fill' }))
+})
 
 // Activity levels
 const activityLevels = [
@@ -285,10 +123,27 @@ const isFoodSelected = (foodId) => {
   return formData.value.selectedFoods.includes(foodId)
 }
 
-// Get foods by category
-const getFoodsByCategory = (category) => {
-  return ugandanFoods.filter(f => f.category === category)
-}
+// Filtered foods for UI selections (max 20)
+const filteredFoods = computed(() => {
+  let items = localFoods.value || []
+  if (searchQuery.value) {
+    const q = searchQuery.value.toLowerCase()
+    items = items.filter(f => f.name.toLowerCase().includes(q))
+  }
+  if (selectedCategory.value && selectedCategory.value !== 'all') {
+    items = items.filter(f => (f.category || '').toLowerCase() === selectedCategory.value.toLowerCase())
+  }
+  if (selectedRegion.value && selectedRegion.value !== 'all') {
+    items = items.filter(f => (f.region || '').toLowerCase() === selectedRegion.value.toLowerCase())
+  }
+  if (showOnlyAvailable.value) {
+    items = items.filter(f => f.available)
+  }
+  if (maxPricePerKg.value != null) {
+    items = items.filter(f => (f.pricePerKg || 0) <= Number(maxPricePerKg.value))
+  }
+  return items.slice(0, 20)
+})
 
 // Validation
 const isValid = computed(() => {
@@ -299,38 +154,14 @@ const isValid = computed(() => {
   )
 })
 
-// Calculate aggregate nutrition from selected foods
-const calculateNutrition = () => {
-  const selectedFoodObjects = ugandanFoods.filter(f =>
-    formData.value.selectedFoods.includes(f.id)
-  )
-
-  if (selectedFoodObjects.length === 0) {
-    return null
-  }
-
-  // Average the nutritional values
-  const avg = {}
-  const nutritionKeys = [
-    'Energy_kcal_per_serving', 'Protein_g_per_serving', 'Fat_g_per_serving',
-    'Carbohydrates_g_per_serving', 'Fiber_g_per_serving', 'Calcium_mg_per_serving',
-    'Iron_mg_per_serving', 'Zinc_mg_per_serving', 'VitaminA_ug_per_serving',
-    'VitaminC_mg_per_serving', 'Potassium_mg_per_serving', 'Magnesium_mg_per_serving'
-  ]
-
-  nutritionKeys.forEach(key => {
-    const sum = selectedFoodObjects.reduce((acc, food) => acc + food[key], 0)
-    avg[key] = Math.round(sum / selectedFoodObjects.length)
-  })
-
-  return avg
-}
+// Food preferences are for meal plan generation only, not for prediction input
+// Return empty nutrition data - the model will use demographics only
 
 // Watch for changes and emit
 watch(formData, (newVal) => {
-  const nutrition = calculateNutrition()
+  // Only emit food preferences, not nutrition data
+  // The model uses demographics only for prediction
   const output = {
-    ...nutrition,
     selectedFoods: newVal.selectedFoods,
     mealsPerDay: newVal.mealsPerDay,
     activityLevel: newVal.activityLevel,
@@ -360,23 +191,39 @@ if (formData.value.selectedFoods.length === 0) {
       <h3><i class="pi pi-shopping-cart"></i> Select Your Preferred Foods</h3>
       <p class="section-hint">Choose at least 3 foods you enjoy or can access easily</p>
 
-      <div v-for="category in foodCategories" :key="category.name" class="food-category">
-        <h4 class="category-title">
-          <i :class="category.icon" :style="{ color: category.color }"></i>
-          {{ category.name }}
-        </h4>
-        <div class="food-grid">
-          <button
-            v-for="food in getFoodsByCategory(category.name)"
-            :key="food.id"
-            @click="toggleFood(food.id)"
-            class="food-card"
-            :class="{ selected: isFoodSelected(food.id) }"
-          >
-            <i v-if="isFoodSelected(food.id)" class="pi pi-check-circle check-icon"></i>
-            <div class="food-name">{{ food.name }}</div>
-          </button>
-        </div>
+      <!-- Inline filters for selection -->
+      <div class="selection-filters">
+        <input v-model="searchQuery" class="form-control" placeholder="Search foods..." />
+        <select v-model="selectedCategory" class="form-control">
+          <option value="all">All Categories</option>
+          <option v-for="c in foodCategories" :key="c.name" :value="c.name">{{ c.name }}</option>
+        </select>
+        <select v-model="selectedRegion" class="form-control">
+          <option value="all">All Regions</option>
+          <option value="central">Central</option>
+          <option value="western">Western</option>
+          <option value="eastern">Eastern</option>
+          <option value="northern">Northern</option>
+        </select>
+        <label class="filter-availability">
+          <input type="checkbox" v-model="showOnlyAvailable" /> Only show available
+        </label>
+        <input v-model.number="maxPricePerKg" type="number" placeholder="Max price UGX/kg" class="form-control" />
+      </div>
+
+      <div class="food-grid">
+        <button
+          v-for="food in filteredFoods"
+          :key="food.id"
+          @click="toggleFood(food.id)"
+          class="food-card"
+          :class="{ selected: isFoodSelected(food.id) }"
+        >
+          <i v-if="isFoodSelected(food.id)" class="pi pi-check-circle check-icon"></i>
+          <div class="food-name">{{ food.name }}</div>
+          <div class="food-meta">{{ food.category }} • {{ food.region }}</div>
+          <div class="food-price-small">{{ (food.pricePerKg || 0).toLocaleString() }} UGX/kg</div>
+        </button>
       </div>
     </div>
 
@@ -531,6 +378,45 @@ if (formData.value.selectedFoods.length === 0) {
   gap: var(--spacing-md);
 }
 
+.selection-filters {
+  display: flex;
+  gap: var(--spacing-sm);
+  align-items: center;
+  margin-bottom: var(--spacing-md);
+  flex-wrap: wrap;
+}
+
+.filter-availability {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.food-meta {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin-top: 6px;
+}
+
+@media (max-width: 768px) {
+  .food-meta {
+    display: none;
+  }
+}
+
+.food-price-small {
+  font-size: 0.85rem;
+  color: var(--accent-color);
+  margin-top: 4px;
+  font-weight: 700;
+}
+
+@media (max-width: 768px) {
+  .food-price-small {
+    display: none;
+  }
+}
+
 .food-card {
   position: relative;
   padding: var(--spacing-lg);
@@ -540,6 +426,12 @@ if (formData.value.selectedFoods.length === 0) {
   cursor: pointer;
   transition: all 0.2s;
   text-align: center;
+}
+
+@media (max-width: 768px) {
+  .food-card {
+    padding: var(--spacing-sm);
+  }
 }
 
 .food-card:hover {
@@ -565,6 +457,12 @@ if (formData.value.selectedFoods.length === 0) {
   font-weight: 600;
   color: var(--text-color);
   font-size: var(--font-size-sm);
+}
+
+@media (max-width: 768px) {
+  .food-name {
+    font-size: 0.75rem;
+  }
 }
 
 /* Form Sections */

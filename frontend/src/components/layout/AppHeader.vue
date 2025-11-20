@@ -56,15 +56,17 @@ const navItems = computed(() => [
       </nav>
 
       <div class="header-right">
-        <!-- Online/Offline Status -->
+        <!-- Online/Offline Status (click to toggle forced offline in settings) -->
         <div class="status-indicator">
-          <span
+          <button
             class="status-badge"
-            :class="appStore.isOnline ? 'status-online' : 'status-offline'"
+            :class="(settingsStore.offlineMode ? 'status-offline' : (appStore.isOnline ? 'status-online' : 'status-offline'))"
+            @click="settingsStore.toggleOfflineMode()"
+            title="Toggle forced offline mode"
           >
-            <i :class="appStore.isOnline ? 'pi pi-wifi' : 'pi pi-ban'"></i>
-            {{ appStore.isOnline ? t('common.online') : t('common.offline') }}
-          </span>
+            <i :class="(settingsStore.offlineMode ? 'pi pi-ban' : (appStore.isOnline ? 'pi pi-wifi' : 'pi pi-ban'))"></i>
+            {{ settingsStore.offlineMode ? (t('common.offline') + ' (forced)') : (appStore.isOnline ? t('common.online') : t('common.offline')) }}
+          </button>
         </div>
 
         <!-- Language selection removed (single-language mode) -->

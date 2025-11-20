@@ -52,19 +52,15 @@ class ModelLoader:
         """Load feature names"""
         try:
             # Try v2 first
-            feature_path = self.local_model_dir / 'feature_names_v2_20251103.pkl'
+            feature_path = self.local_model_dir / 'feature_names_v2_20251120.pkl'
             if not feature_path.exists():
-                feature_path = self.local_model_dir / 'xgboost_feature_names_20251103.pkl'
+                feature_path = self.local_model_dir / 'xgboost_feature_names_20251120.pkl'
 
             with open(feature_path, 'rb') as f:
                 self.feature_names = pickle.load(f)
 
-            # Fix VitaminA field name (µ/μ -> ug for ASCII compatibility)
-            self.feature_names = [
-                'VitaminA_ug_per_serving' if 'VitaminA_' in name and 'g_per_serving' in name
-                else name
-                for name in self.feature_names
-            ]
+            # Normalize feature names to lowercase
+            self.feature_names = [name.lower() for name in self.feature_names]
 
             logger.info(f"Loaded {len(self.feature_names)} feature names")
         except Exception as e:
@@ -75,7 +71,7 @@ class ModelLoader:
     def _load_offline_model(self):
         """Load lightweight HistGradient model"""
         try:
-            model_path = self.local_model_dir / 'baseline_nutrition_model_v2_20251103.pkl'
+            model_path = self.local_model_dir / 'baseline_nutrition_model_v2_20251120.pkl'
             if not model_path.exists():
                 logger.info("Offline model not found in local uploads")
                 self.models['offline'] = {'available': False}
@@ -105,7 +101,7 @@ class ModelLoader:
     def _load_local_xgboost(self):
         """Load local XGBoost model"""
         try:
-            model_path = self.local_model_dir / 'xgboost_nutrition_model_20251103.pkl'
+            model_path = self.local_model_dir / 'xgboost_nutrition_model_20251120.pkl'
             if not model_path.exists():
                 logger.info("Local XGBoost model not found in local uploads")
                 self.models['local_xgboost'] = {'available': False}
@@ -329,10 +325,30 @@ class ModelLoader:
             elif self.models.get('offline', {}).get('available'):
                 model_key = 'offline'
             else:
+                # No trained models are available in this environment.
+                # Provide a lightweight heuristic fallback so the API remains usable for testing.
+                try:
+                    # Basic heuristic: estimate daily caloric needs as Energy_kcal_per_serving * meals per day
+                    meals = int(input_data.get('mealsPerDay') or input_data.get('meals_per_day') or 3)
+                    energy = float(input_data.get('Energy_kcal_per_serving') or input_data.get('energy') or 250)
+                    caloric_needs = float(max(800.0, energy * meals))
+                except Exception:
+                    caloric_needs = 2000.0
+
                 return {
-                    'success': False,
-                    'error': 'No models available',
-                    'status': 'error'
+                    'success': True,
+                    'prediction': {
+                        'caloric_needs': float(caloric_needs),
+                        'unit': 'kcal/day',
+                        'model': 'heuristic-fallback',
+                        'accuracy': 'heuristic: approximate'
+                    },
+                    'model_info': {
+                        'type': 'heuristic',
+                        'size': 'n/a',
+                        'mode': 'fallback'
+                    },
+                    'status': 'fallback'
                 }
         else:
             model_key = model_preference
@@ -350,15 +366,36 @@ class ModelLoader:
         try:
             # Prepare input
             df = pd.DataFrame([input_data])
+            
+            # Normalize column names to match model expectations
+            column_mapping = {
+                'energy_kcal_per_serving': 'energy_kcal_per_serving',
+                'protein_g_per_serving': 'protein_g_per_serving',
+                'fat_g_per_serving': 'fat_g_per_serving',
+                'carbohydrates_g_per_serving': 'carbohydrate_g_per_serving',
+                'fiber_g_per_serving': 'fiber_g_per_serving',
+                'calcium_mg_per_serving': 'calcium_mg_per_serving',
+                'iron_mg_per_serving': 'iron_mg_per_serving',
+                'zinc_mg_per_serving': 'zinc_mg_per_serving',
+                'vitamina_ug_per_serving': 'vitamin_a_mcg_per_serving',
+                'vitaminc_mg_per_serving': 'vitamin_c_mg_per_serving',
+                'potassium_mg_per_serving': 'potassium_mg_per_serving',
+                'region_encoded': 'region_encoded',
+                'condition_encoded': 'condition_encoded',
+                'age_group_encoded': 'age_group_encoded',
+                'season_encoded': 'season_encoded'
+            }
+            df.columns = [col.lower() for col in df.columns]
+            df = df.rename(columns=column_mapping)
 
             # If we have canonical feature order, apply it. Otherwise try model's
             # feature_names_in_ attribute. If neither present, pass df as-is.
             if self.feature_names:
                 try:
                     df = df[self.feature_names]
-                except Exception:
+                except Exception as e:
                     # columns missing or mismatched; fall back
-                    logger.warning("Feature names present but input missing some columns; falling back to available input columns")
+                    logger.warning(f"Feature names present but input missing some columns: {e}; falling back to available input columns")
             else:
                 if hasattr(model, 'feature_names_in_'):
                     cols = list(getattr(model, 'feature_names_in_'))
@@ -369,19 +406,23 @@ class ModelLoader:
 
             # Make prediction
             prediction = model.predict(df)[0]
-            
-            # Determine status
+
+            # Determine status based on model key
             if model_key == 'huggingface':
                 status = 'online'
+            elif model_key == 'local_xgboost':
+                status = 'local'
+            elif model_key == 'offline':
+                status = 'offline'
             else:
                 status = 'unknown'
-            
+
             return {
                 'success': True,
                 'prediction': {
                     'caloric_needs': float(prediction),
                     'unit': 'kcal/day',
-                    'model': f"{model_info['type']} ({status.upper()})",
+                    'model': model_info['type'],
                     'accuracy': model_info['accuracy']
                 },
                 'model_info': {

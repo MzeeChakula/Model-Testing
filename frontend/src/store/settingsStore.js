@@ -4,7 +4,7 @@ import { ref, watch } from 'vue'
 export const useSettingsStore = defineStore('settings', () => {
   // State
   const language = ref('en')
-  const modelPreference = ref('auto') // 'auto', 'online', 'offline'
+  const modelPreference = ref('auto') // 'auto', 'huggingface', 'local_xgboost', 'offline'
   const offlineMode = ref(false)
   const highContrastMode = ref(false)
   const largeFontMode = ref(false)

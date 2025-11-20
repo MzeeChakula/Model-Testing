@@ -47,7 +47,8 @@ def get_local_foods(limit: int = 500):
     df = pd.read_csv(csv_path)
 
     foods = []
-    for _, row in df.iterrows():
+    seen = set()
+    for i, row in df.iterrows():
         try:
             name = row.get('food_name_english') or row.get('food_name') or ''
             category = _normalize_category(row.get('food_category', 'other'))
@@ -70,8 +71,17 @@ def get_local_foods(limit: int = 500):
             availability_score = float(row.get('availability_score', 0) or 0)
             available = availability_score >= 0.5
 
+            # normalize name for deduplication
+            clean_name = str(name).strip()
+            key = clean_name.lower()
+            if key in seen:
+                # skip duplicates by normalized name
+                continue
+            seen.add(key)
+
             foods.append({
-                'name': str(name),
+                'id': f"food_{i}",
+                'name': clean_name,
                 'category': category,
                 'region': region,
                 'energy': round(energy, 1),

@@ -8,6 +8,9 @@ const { t } = useI18n()
 const searchQuery = ref('')
 const selectedCategory = ref('all')
 const selectedRegion = ref('all')
+const showOnlyAvailable = ref(false)
+const maxPrice = ref(null)
+const sortBy = ref('name')
 
 // Local Ugandan foods database with pricing (UGX per kg)
 const foodsDatabase = ref([])
@@ -17,8 +20,19 @@ const loadFoods = async () => {
   try {
     const data = await apiService.getLocalFoods()
     if (Array.isArray(data)) {
+      // Remove duplicates by name
+      const uniqueNames = new Set()
+      const uniqueData = data.filter(f => {
+        const name = f.name || 'Unknown'
+        if (uniqueNames.has(name)) return false
+        uniqueNames.add(name)
+        return true
+      })
+      
       // ensure category and region naming align with previous frontend expectations
-      foodsDatabase.value = data.map(f => ({
+      foodsDatabase.value = uniqueData.map((f, idx) => ({
+        // ensure a stable unique id: prefer explicit id from backend, otherwise use generated index
+        id: f.id != null ? String(f.id) : `food_${idx}`,
         name: f.name || 'Unknown',
         category: (f.category || 'other').toLowerCase(),
         region: (f.region || 'all').toLowerCase(),
@@ -83,6 +97,27 @@ const filteredFoods = computed(() => {
     )
   }
 
+  // Availability filter
+  if (showOnlyAvailable.value) {
+    foods = foods.filter(f => f.available)
+  }
+
+  // Price filter (maxPrice UGX per kg)
+  if (maxPrice.value != null && !isNaN(Number(maxPrice.value))) {
+    foods = foods.filter(f => (f.pricePerKg || 0) <= Number(maxPrice.value))
+  }
+
+  // Sorting
+  if (sortBy.value === 'price_asc') {
+    foods = foods.sort((a, b) => (a.pricePerKg || 0) - (b.pricePerKg || 0))
+  } else if (sortBy.value === 'price_desc') {
+    foods = foods.sort((a, b) => (b.pricePerKg || 0) - (a.pricePerKg || 0))
+  } else if (sortBy.value === 'energy_desc') {
+    foods = foods.sort((a, b) => (b.energy || 0) - (a.energy || 0))
+  } else {
+    foods = foods.sort((a, b) => (a.name || '').localeCompare(b.name || ''))
+  }
+
   return foods
 })
 
@@ -144,6 +179,26 @@ const closeFoodDetails = () => {
             </option>
           </select>
         </div>
+
+        <div class="filter-group">
+          <label>Availability:</label>
+          <label class="checkbox-label"><input type="checkbox" v-model="showOnlyAvailable" /> Only show available</label>
+        </div>
+
+        <div class="filter-group">
+          <label>Max price (UGX/kg):</label>
+          <input type="number" v-model.number="maxPrice" class="form-control" placeholder="e.g. 5000" />
+        </div>
+
+        <div class="filter-group">
+          <label>Sort:</label>
+          <select v-model="sortBy" class="form-control">
+            <option value="name">Name (A–Z)</option>
+            <option value="price_asc">Price (Low → High)</option>
+            <option value="price_desc">Price (High → Low)</option>
+            <option value="energy_desc">Energy (High → Low)</option>
+          </select>
+        </div>
       </div>
 
       <!-- Results Count -->
@@ -155,7 +210,7 @@ const closeFoodDetails = () => {
       <div class="foods-grid">
         <div
           v-for="food in filteredFoods"
-          :key="food.name"
+            :key="food.id"
           class="food-card"
         >
           <div class="food-header">

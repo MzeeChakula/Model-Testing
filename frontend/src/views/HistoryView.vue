@@ -10,8 +10,8 @@ const { t } = useI18n()
 const chatStore = useChatStore()
 const predictionStore = usePredictionStore()
 
-const chatHistory = computed(() => chatStore.conversationHistory)
-const predictionHistory = computed(() => predictionStore.predictionHistory)
+const chatHistory = computed(() => chatStore.conversationHistory || [])
+const predictionHistory = computed(() => predictionStore.predictionHistory || [])
 
 const formatDate = (timestamp) => {
   const date = new Date(timestamp)
@@ -191,9 +191,12 @@ const clearAllPredictionHistory = () => {
                 <span class="value">{{ prediction.result.prediction.model }}</span>
               </div>
               <div class="info-row">
-                <span class="label">Status:</span>
+                <span class="label">Source:</span>
                 <span class="value status-badge" :class="prediction.result.status">
-                  {{ prediction.result.status }}
+                  {{ prediction.result.status === 'online' ? 'Hugging Face' :
+                     prediction.result.status === 'local' ? 'Local Model' :
+                     prediction.result.status === 'offline' ? 'Offline Model' :
+                     prediction.result.status }}
                 </span>
               </div>
               <div v-if="prediction.input.region_encoded !== undefined" class="info-row">
@@ -434,8 +437,13 @@ const clearAllPredictionHistory = () => {
   color: white;
 }
 
+.status-badge.local {
+  background: var(--primary-color);
+  color: white;
+}
+
 .status-badge.offline {
-  background: var(--text-secondary);
+  background: #9c27b0;
   color: white;
 }
 

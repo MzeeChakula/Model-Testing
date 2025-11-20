@@ -52,7 +52,7 @@ const handleChatComplete = async (collectedData) => {
     pendingPredictionData.value = inputData
 
     // Get prediction
-    const modelPreference = settingsStore.offlineMode ? 'offline' : (settingsStore.modelPreference || 'huggingface')
+    const modelPreference = settingsStore.offlineMode ? 'offline' : (settingsStore.modelPreference || 'auto')
     await predictionStore.predict(inputData, modelPreference)
 
     // Save chat history before navigating
@@ -91,7 +91,7 @@ const retryPrediction = async () => {
     error.value = null
     showRetryOption.value = false
 
-    const modelPreference = settingsStore.offlineMode ? 'offline' : (settingsStore.modelPreference || 'huggingface')
+    const modelPreference = settingsStore.offlineMode ? 'offline' : (settingsStore.modelPreference || 'auto')
     await predictionStore.predict(pendingPredictionData.value, modelPreference)
 
     // Save chat history

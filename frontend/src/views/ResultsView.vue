@@ -113,9 +113,12 @@ const printResults = () => {
           <div class="info-item">
             <i class="pi pi-server"></i>
             <div>
-              <strong>Status</strong>
+              <strong>Source</strong>
               <span class="status-badge" :class="prediction.status">
-                {{ prediction.status }}
+                {{ prediction.status === 'online' ? 'Hugging Face' :
+                   prediction.status === 'local' ? 'Local Model' :
+                   prediction.status === 'offline' ? 'Offline Model' :
+                   prediction.status }}
               </span>
             </div>
           </div>
@@ -353,6 +356,14 @@ const printResults = () => {
 
 .status-badge.online {
   background: var(--accent-color);
+}
+
+.status-badge.local {
+  background: var(--primary-color);
+}
+
+.status-badge.offline {
+  background: #9c27b0;
 }
 
 /* Sections */

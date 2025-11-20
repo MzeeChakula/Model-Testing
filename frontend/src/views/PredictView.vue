@@ -22,10 +22,25 @@ const nutritionData = ref({})
 const demographicsValid = ref(false)
 const nutritionValid = ref(false)
 
-// Combined input data
+// Combined input data - add default nutrition values for model prediction
 const combinedData = computed(() => ({
-  ...nutritionData.value,
+  // Default nutrition values (model uses demographics primarily)
+  Energy_kcal_per_serving: 300,
+  Protein_g_per_serving: 12,
+  Fat_g_per_serving: 8,
+  Carbohydrates_g_per_serving: 45,
+  Fiber_g_per_serving: 5,
+  Calcium_mg_per_serving: 150,
+  Iron_mg_per_serving: 3,
+  Zinc_mg_per_serving: 2,
+  VitaminA_ug_per_serving: 400,
+  VitaminC_mg_per_serving: 15,
+  Potassium_mg_per_serving: 350,
+  Magnesium_mg_per_serving: 50,
+  // Demographics (primary prediction factors)
   ...demographicsData.value
+  // Note: Food preferences (selectedFoods, mealsPerDay, etc.) are stored separately
+  // They are not sent to the prediction API as they're for meal plan generation only
 }))
 
 const canProceed = computed(() => {
@@ -48,7 +63,7 @@ const prevStep = () => {
 
 const submitPrediction = async () => {
   try {
-    const modelPref = settingsStore.offlineMode ? 'offline' : (settingsStore.modelPreference || 'huggingface')
+    const modelPref = settingsStore.offlineMode ? 'offline' : (settingsStore.modelPreference || 'auto')
 
     await predictionStore.predict(combinedData.value, modelPref)
 

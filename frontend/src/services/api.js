@@ -98,6 +98,12 @@ export const apiService = {
     return response.data
   },
 
+  // Foods dataset (served by backend)
+  async getLocalFoods(params = {}) {
+    const response = await api.get('/foods/local', { params })
+    return response.data
+  },
+
   // Monitoring
   async getSystemMetrics() {
     const response = await api.get('/metrics')

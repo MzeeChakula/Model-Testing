@@ -15,10 +15,10 @@ const foodsDatabase = ref([])
 // Load foods from backend CSV-parsed endpoint
 const loadFoods = async () => {
   try {
-    const res = await apiService.get('/foods/local')
-    if (res && res.data) {
+    const data = await apiService.getLocalFoods()
+    if (Array.isArray(data)) {
       // ensure category and region naming align with previous frontend expectations
-      foodsDatabase.value = res.data.map(f => ({
+      foodsDatabase.value = data.map(f => ({
         name: f.name || 'Unknown',
         category: (f.category || 'other').toLowerCase(),
         region: (f.region || 'all').toLowerCase(),
@@ -34,7 +34,6 @@ const loadFoods = async () => {
       }))
     }
   } catch (err) {
-    // fallback: keep empty database; developer can check console for details
     // eslint-disable-next-line no-console
     console.error('Failed to load foods from API', err)
   }

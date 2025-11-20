@@ -1,0 +1,246 @@
+{
+  "app": {
+    "name": "MzeeChakula",
+    "subtitle": "Elderly Nutrition Planning for Uganda",
+    "tagline": "Smart meal planning for healthy aging"
+  },
+  "nav": {
+    "home": "Home",
+    "predict": "New Prediction",
+    "chat": "Chat Assistant",
+    "foods": "Local Foods",
+    "history": "History",
+    "pricing": "Pricing",
+    "contact": "Contact",
+    "settings": "Settings"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "cancel": "Cancel",
+    "save": "Save",
+    "next": "Next",
+    "back": "Back",
+    "submit": "Submit",
+    "clear": "Clear",
+    "close": "Close",
+    "online": "Online",
+    "offline": "Offline",
+    "yes": "Yes",
+    "no": "No"
+  },
+  "home": {
+    "welcome": "Welcome to MzeeChakula",
+    "description": "AI-powered nutrition planning for elderly care using locally sourced Ugandan foods",
+    "getStarted": "Get Started",
+    "features": {
+      "title": "Features",
+      "aiPowered": "AI-Powered Predictions",
+      "aiPoweredDesc": "Using advanced machine learning models for accurate caloric needs prediction",
+      "localFoods": "Local Food Database",
+      "localFoodsDesc": "Culturally relevant meals using locally available Ugandan foods",
+      "offline": "Offline Support",
+      "offlineDesc": "Works without internet using lightweight offline models",
+      "personalized": "Personalized Plans",
+      "personalizedDesc": "Tailored to age, health conditions, and dietary needs"
+    }
+  },
+  "predict": {
+    "title": "New Nutrition Prediction",
+    "demographics": "Demographics",
+    "nutrition": "Nutritional Information",
+    "results": "Results",
+    "ageGroup": "Age Group",
+    "region": "Region",
+    "healthCondition": "Health Condition",
+    "season": "Season",
+    "portionSize": "Portion Size (g)",
+    "estimatedCost": "Estimated Cost (UGX)",
+    "tryChat": "Prefer to chat?",
+    "chatDescription": "Use our conversational AI assistant with voice support",
+    "switchToChat": "Switch to Chat"
+  },
+  "regions": {
+    "central": "Central Uganda (Buganda)",
+    "western": "Western Uganda (Ankole, Tooro, Kigezi, Bunyoro)",
+    "eastern": "Eastern Uganda (Busoga, Bugisu, Teso)",
+    "northern": "Northern Uganda (Acholi, Lango, Karamoja, West Nile)"
+  },
+  "conditions": {
+    "hypertension": "Hypertension",
+    "undernutrition": "Undernutrition",
+    "anemia": "Anemia",
+    "frailty": "Frailty",
+    "digestive": "Digestive Issues",
+    "arthritis": "Arthritis",
+    "osteoporosis": "Osteoporosis",
+    "diabetes": "Diabetes"
+  },
+  "ageGroups": {
+    "60-70": "60-70 years",
+    "70-80": "70-80 years",
+    "80+": "80+ years"
+  },
+  "seasons": {
+    "dry": "Dry Season",
+    "wet": "Wet Season"
+  },
+  "nutrients": {
+    "energy": "Energy (kcal)",
+    "protein": "Protein (g)",
+    "fat": "Fat (g)",
+    "carbs": "Carbohydrates (g)",
+    "fiber": "Fiber (g)",
+    "calcium": "Calcium (mg)",
+    "iron": "Iron (mg)",
+    "zinc": "Zinc (mg)",
+    "vitaminA": "Vitamin A (µg)",
+    "vitaminC": "Vitamin C (mg)",
+    "potassium": "Potassium (mg)",
+    "magnesium": "Magnesium (mg)"
+  },
+  "results": {
+    "title": "Prediction Results",
+    "caloricNeeds": "Daily Caloric Needs",
+    "modelUsed": "Model Used",
+    "accuracy": "Model Accuracy",
+    "mealPlan": "Recommended Meal Plan",
+    "recommendations": "Health Recommendations"
+  },
+  "settings": {
+    "title": "Settings",
+    "language": "Language",
+    "modelPreference": "Model Preference",
+    "auto": "Auto (Best Available)",
+    "online": "Online Only",
+    "offline": "Offline Only",
+    "accessibility": "Accessibility",
+    "highContrast": "High Contrast Mode",
+    "largeFont": "Large Font Mode",
+    "defaults": "Default Values",
+    "clearData": "Clear All Data",
+    "clearDataConfirm": "Are you sure you want to clear all saved data?"
+  },
+  "chat": {
+    "title": "Chat Assistant",
+    "subtitle": "Talk to our AI assistant for personalized nutrition guidance",
+    "greeting": "Hello! I'm your nutrition assistant. I'm here to help plan healthy meals. How can I help you today?",
+    "welcome": "Welcome! Let's get started with some information about you.",
+    "greetingWithInfo": "Thank you for that information! Let me ask you a few more questions.",
+    "askAge": "How old are you? Please choose: 60-70 years, 70-80 years, or 80+ years.",
+    "askRegion": "Which region of Uganda are you from? Central (Kampala/Buganda), Western (Mbarara/Ankole), Eastern (Mbale/Busoga), or Northern (Gulu/Acholi)?",
+    "askCondition": "Do you have any health conditions? For example: hypertension, diabetes, anemia, osteoporosis, heart disease, kidney disease, arthritis, or are you generally healthy?",
+    "askSeason": "What season are we in? Dry season or wet season (rainy)?",
+    "askNutrition": "What foods did you eat today? You can say something like 'I had matooke and beans' or 'fish with vegetables'.",
+    "demographicsComplete": "Great! I have your basic information. Now let's talk about your meals.",
+    "nutritionReceived": "Thank you! I've recorded your meal information.",
+    "askConfirm": "Is all this information correct? Say 'yes' to continue or 'no' to start over.",
+    "processingPrediction": "Perfect! Let me calculate your personalized nutrition recommendations...",
+    "understood": "I understand.",
+    "didNotUnderstand": "I'm sorry, I didn't quite understand that. Could you please rephrase?",
+    "restartConversation": "Let's start over from the beginning.",
+    "typeMessage": "Type your message...",
+    "listening": "Listening...",
+    "voiceInput": "Voice Input",
+    "enableVoice": "Enable voice responses",
+    "disableVoice": "Disable voice responses",
+    "switchToForm": "Switch to Form",
+    "reset": "Start Over",
+    "processing": "Processing...",
+    "processingDescription": "Analyzing your information and generating recommendations",
+    "howItWorks": "How It Works",
+    "instruction1": "Answer questions naturally in your own words",
+    "instruction2": "Use voice input by clicking the microphone button",
+    "instruction3": "Enable voice output to hear responses read aloud",
+    "instruction4": "Perfect for elderly users or those who prefer conversation"
+  },
+  "pricing": {
+    "title": "Pricing Plans",
+    "subtitle": "Choose the plan that best fits your needs",
+    "monthly": "Monthly",
+    "yearly": "Yearly",
+    "save17": "Save 17%",
+    "perMonth": "per month",
+    "perYear": "per year",
+    "selectPlan": "Select Plan",
+    "currentPlan": "Current Plan",
+    "mostPopular": "Most Popular",
+    "community": "Community",
+    "individual": "Individual",
+    "professional": "Professional",
+    "healthcare": "Healthcare",
+    "faq": "Frequently Asked Questions",
+    "faqQ1": "How do I upgrade my plan?",
+    "faqA1": "You can upgrade your plan at any time through this page. The change takes effect immediately.",
+    "faqQ2": "Can I switch between monthly and yearly billing?",
+    "faqA2": "Yes! Switch anytime. Yearly billing offers 17% savings compared to monthly.",
+    "faqQ3": "What payment methods are accepted?",
+    "faqA3": "We accept Mobile Money (MTN, Airtel), bank transfers, and major credit cards.",
+    "faqQ4": "Is there a free trial?",
+    "faqA4": "The Community plan is free forever with basic features. Paid plans start immediately upon selection.",
+    "faq2": {
+      "question": "Can I change my plan later?",
+      "answer": "Yes, you can upgrade or downgrade your plan at any time. Changes take effect immediately and we'll prorate any charges."
+    },
+    "faq3": {
+      "question": "Is there a free trial?",
+      "answer": "Yes! The Community plan is free forever with basic features. Paid plans offer a 14-day money-back guarantee."
+    },
+    "faq4": {
+      "question": "Do you offer discounts for NGOs?",
+      "answer": "Yes, we offer special pricing for non-profits, NGOs, and healthcare organizations. Contact us for custom pricing."
+    },
+    "needHelp": "Need help choosing?",
+    "contactUs": "Our team is here to help you find the perfect plan for your needs.",
+    "talkToUs": "Contact Us",
+    "contact": "Need a custom plan?",
+    "contactDescription": "For large healthcare facilities or NGOs, we can create a custom enterprise plan.",
+    "plans": {
+      "free": {
+        "feature1": "5 meal predictions per month",
+        "feature2": "Basic nutrition recommendations",
+        "feature3": "Access to local foods database",
+        "feature4": "Offline access to saved data",
+        "feature5": "Community support forum"
+      },
+      "basic": {
+        "feature1": "Unlimited meal predictions",
+        "feature2": "Advanced nutrition analysis",
+        "feature3": "Personalized diet recommendations",
+        "feature4": "AI chat & voice assistant",
+        "feature5": "Batch processing (up to 10 meals)",
+        "feature6": "Priority email support",
+        "feature7": "Meal history tracking",
+        "feature8": "Offline mode with sync"
+      },
+      "pro": {
+        "feature1": "All Individual plan features",
+        "feature2": "Unlimited batch processing",
+        "feature3": "Multi-patient management (5 users)",
+        "feature4": "Export reports (PDF/Excel)",
+        "feature5": "Custom meal plan templates",
+        "feature6": "Priority phone & email support",
+        "feature7": "Advanced analytics dashboard",
+        "feature8": "Nutritionist consultation (1/month)"
+      },
+      "enterprise": {
+        "feature1": "All Professional plan features",
+        "feature2": "Unlimited users & API access",
+        "feature3": "White-label branding options",
+        "feature4": "Advanced analytics & reporting",
+        "feature5": "Custom integrations (EMR/EHR)",
+        "feature6": "Dedicated account manager",
+        "feature7": "24/7 priority support",
+        "feature8": "On-site training & onboarding"
+      }
+    }
+  },
+  "contact": {
+    "title": "Contact Us",
+    "subtitle": "Have questions? We'd love to hear from you. Send us a message and we'll respond as soon as possible."
+  },
+  "errors": {
+    "predictionFailed": "Prediction failed. Please try again."
+  }
+}

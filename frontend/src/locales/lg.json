@@ -1,0 +1,246 @@
+{
+  "app": {
+    "name": "MzeeChakula",
+    "subtitle": "Enkola y'emmere ya bakadde mu Uganda",
+    "tagline": "Okuteekateeka emmere obulungi okusobola okuwangaala obulungi"
+  },
+  "nav": {
+    "home": "Awaka",
+    "predict": "Okugereranya Okupya",
+    "chat": "Omuyambi w'Okwogera",
+    "foods": "Emmere z'omu Kitundu",
+    "history": "Ebyafaayo",
+    "pricing": "Ebbeeyi",
+    "contact": "Tuweereze",
+    "settings": "Enteekateeka"
+  },
+  "common": {
+    "loading": "Kitegeke...",
+    "error": "Ensobi",
+    "success": "Kiwedde",
+    "cancel": "Sazaamu",
+    "save": "Tereka",
+    "next": "Oluddirira",
+    "back": "Ddayo",
+    "submit": "Waayo",
+    "clear": "Sangula",
+    "close": "Ggalawo",
+    "online": "Ku Mutimbagano",
+    "offline": "Nga teli ku Mutimbagano",
+    "yes": "Ye",
+    "no": "Nedda"
+  },
+  "home": {
+    "welcome": "Tukusanyukidde ku MzeeChakula",
+    "description": "Enkola ya AI ey'okuteekateeka emmere ya bakadde ng'ekozesa emmere z'omu Uganda",
+    "getStarted": "Tandika",
+    "features": {
+      "title": "Ebintu",
+      "aiPowered": "Okugereranya nga tukozesa AI",
+      "aiPoweredDesc": "Tukozesa tekinologiya ey'amaanyi okugereranya ebikulu by'emmere",
+      "localFoods": "Emmere z'omu Kitundu",
+      "localFoodsDesc": "Emmere ezisobola okufunibwa mu Uganda",
+      "offline": "Okukola nga teli ku Mutimbagano",
+      "offlineDesc": "Enkola ekola nga tolinako yintaneeti",
+      "personalized": "Enteekateeka ya Ssekinnoomu",
+      "personalizedDesc": "Enteekateeka etereddwamu emyaka, obulwadde n'ebyetaago by'emmere"
+    }
+  },
+  "predict": {
+    "title": "Okugereranya Emmere Empya",
+    "demographics": "Ebikwata ku Muntu",
+    "nutrition": "Ebikwata ku Mmere",
+    "results": "Ebivaamu",
+    "ageGroup": "Emyaka",
+    "region": "Ekitundu",
+    "healthCondition": "Obulwadde",
+    "season": "Ekiseera",
+    "portionSize": "Obungi bw'Emmere (g)",
+    "estimatedCost": "Ebbeeyi (UGX)",
+    "tryChat": "Oyagala okwogera?",
+    "chatDescription": "Kozesa omuyambi waffe ow'obugezi n'eddoboozi",
+    "switchToChat": "Kyuka ku Kwogera"
+  },
+  "regions": {
+    "central": "Buganda (Central Uganda)",
+    "western": "Ebugwanjuba (Ankole, Tooro, Kigezi, Bunyoro)",
+    "eastern": "Ebuvanjuba (Busoga, Bugisu, Teso)",
+    "northern": "Obukiikakkono (Acholi, Lango, Karamoja, West Nile)"
+  },
+  "conditions": {
+    "hypertension": "Omusaayi Oguzito",
+    "undernutrition": "Obulwadde bw'Okukendeera",
+    "anemia": "Anemia",
+    "frailty": "Obunafu",
+    "digestive": "Ebizibu by'Ekyenda",
+    "arthritis": "Obulwadde bw'Engonjwa",
+    "osteoporosis": "Amagumba Amaggwaamu",
+    "diabetes": "Diabetes"
+  },
+  "ageGroups": {
+    "60-70": "Emyaka 60-70",
+    "70-80": "Emyaka 70-80",
+    "80+": "Emyaka 80 okusingawo"
+  },
+  "seasons": {
+    "dry": "Ekyeeya",
+    "wet": "Enkuba"
+  },
+  "nutrients": {
+    "energy": "Amaanyi (kcal)",
+    "protein": "Protein (g)",
+    "fat": "Amasavu (g)",
+    "carbs": "Carbohydrates (g)",
+    "fiber": "Fiber (g)",
+    "calcium": "Calcium (mg)",
+    "iron": "Iron (mg)",
+    "zinc": "Zinc (mg)",
+    "vitaminA": "Vitamin A (µg)",
+    "vitaminC": "Vitamin C (mg)",
+    "potassium": "Potassium (mg)",
+    "magnesium": "Magnesium (mg)"
+  },
+  "results": {
+    "title": "Ebivaamu",
+    "caloricNeeds": "Amaanyi Ageetaagibwa Buli Lunaku",
+    "modelUsed": "Enkola Eyakozeseddwa",
+    "accuracy": "Obutuufu bw'Enkola",
+    "mealPlan": "Enteekateeka y'Emmere",
+    "recommendations": "Amagezi"
+  },
+  "settings": {
+    "title": "Enteekateeka",
+    "language": "Olulimi",
+    "modelPreference": "Enkola gy'oyagala",
+    "auto": "Eyeeteekateeka (Esinga Obulungi)",
+    "online": "Ku Mutimbagano Yokka",
+    "offline": "Nga teli ku Mutimbagano Yokka",
+    "accessibility": "Okukozesa",
+    "highContrast": "Langi Ennyonvu",
+    "largeFont": "Ennukuta Ennene",
+    "defaults": "Ebisookerwako",
+    "clearData": "Sangula Byonna",
+    "clearDataConfirm": "Ddala oyagala okusangula byonna ebiterekeddwa?"
+  },
+  "chat": {
+    "title": "Omuyambi w'Okwogera",
+    "subtitle": "Yogera ne omuyambi waffe ow'obugezi ku mmere",
+    "greeting": "Oli otya! Nze omuyambi wo ku mmere. Ndi wano okukuyamba okuteekateeka emmere ennungi. Nkuyinza kutya okukuyamba?",
+    "welcome": "Tukusanyukidde! Ka tutandike n'ebikukwatako.",
+    "greetingWithInfo": "Webale ku bubaka bwo! Ka nkubuuze ebibuuzo ebirala.",
+    "askAge": "Olina emyaka emeka? Londa: 60-70, 70-80, oba 80 n'okusingawo.",
+    "askRegion": "Ova mu kitundu ki mu Uganda? Wakati (Kampala/Buganda), Ebugwanjuba (Mbarara/Ankole), Ebuvanjuba (Mbale/Busoga), oba Obukiikakkono (Gulu/Acholi)?",
+    "askCondition": "Olina bulwadde bwonna? Nga: musujja gw'omusaayi, sukkaali, obutaba na musaayi, amagumba amanafu, omutima, ensigo, ennyingo, oba oli mulamu bulungi?",
+    "askSeason": "Tuli mu kiseera ki? Ekyeeya (ekikalu) oba enkuba?",
+    "askNutrition": "Olya mmere ki leero? Oyinza okugamba 'nalya matooke ne bijanjaalo' oba 'ennyenje n'enva'.",
+    "demographicsComplete": "Kirungi nnyo! Nfunye obubaka bwo. Kale ka tubuulire ku mmere yo.",
+    "nutritionReceived": "Webale! Nteese obubaka bwo ku mmere.",
+    "askConfirm": "Ebyo byonna bituufu? Gamba 'ye' okugenda mu maaso oba 'nedda' okutandika bupya.",
+    "processingPrediction": "Kirungi! Ka nteekateeke amagezi go...",
+    "understood": "Ntegedde.",
+    "didNotUnderstand": "Nsonyiwa, sitegedde bulungi. Osobola okwogera bupya?",
+    "restartConversation": "Ka tutandike bupya okuva ku ntandikwa.",
+    "typeMessage": "Wandiika obubaka...",
+    "listening": "Mpuliriza...",
+    "voiceInput": "Yogera",
+    "enableVoice": "Okulabye eddoboozi",
+    "disableVoice": "Okuziba eddoboozi",
+    "switchToForm": "Kyuka ku Foomu",
+    "reset": "Tandika Bupya",
+    "processing": "Nteekateeka...",
+    "processingDescription": "Nkola ku bubaka bwo era nteekateeka amagezi",
+    "howItWorks": "Engeri Gye Kikola",
+    "instruction1": "Ddamu ebibuuzo mu ngeri yo",
+    "instruction2": "Kozesa eddoboozi ng'onyiga akabutto k'empuliziganya",
+    "instruction3": "Wuliriza eby'okuddamu ng'okakasa eddoboozi",
+    "instruction4": "Kirungi nnyo eri abakulu oba abo abaagala okwogera"
+  },
+  "pricing": {
+    "title": "Enteekateeka z'Ebbeeyi",
+    "subtitle": "Londa enteekateeka ekukwata",
+    "monthly": "Buli Mwezi",
+    "yearly": "Buli Mwaka",
+    "save17": "Tereka 17%",
+    "perMonth": "buli mwezi",
+    "perYear": "buli mwaka",
+    "selectPlan": "Londa Enteekateeka",
+    "currentPlan": "Enteekateeka Eliwo",
+    "mostPopular": "Eyokusinga Okukozesebwa",
+    "community": "Ekibiina",
+    "individual": "Omuntu Omu",
+    "professional": "Omukugu",
+    "healthcare": "Obujjanjabi",
+    "faq": "Ebibuuzo Ebya Bulijjo",
+    "faqQ1": "Nnyinza ntya okukwaata enteekateeka ey'oku ddaala?",
+    "faqA1": "Osobola okukwaata enteekateeka ey'oku ddaala essaawa yonna ng'oyita wano. Enkyukakyuka etandika amangwago.",
+    "faqQ2": "Nsobola okukyusa wakati w'okusasula buli mwezi n'okusasula buli mwaka?",
+    "faqA2": "Ye! Kyusa essaawa yonna. Okusasula buli mwaka kutereka 17% okusingawo okusasula buli mwezi.",
+    "faqQ3": "Mukkiriza ngeri ki ez'okusasula?",
+    "faqA3": "Tukkiriza Mobile Money (MTN, Airtel), okussa mu bbanka, ne kaadi z'okusasula.",
+    "faqQ4": "Mulinawo okugezaako okw'obwerere?",
+    "faqA4": "Enteekateeka y'Ekibiina ya bwereere emirembe gyonna n'ebintu ebikulu. Enteekateeka ezibaako ensasula zitandika mangu nga zirondeddwa.",
+    "faq2": {
+      "question": "Nsobola okukyusa enteekateeka yange oluvannyuma?",
+      "answer": "Ye, osobola okukwaata enteekateeka ey'oku ddaala oba okukka wansi essaawa yonna. Enkyukakyuka zitandika amangwago era tujja kukubalirira."
+    },
+    "faq3": {
+      "question": "Mulinawo okugezaako okw'obwerere?",
+      "answer": "Ye! Enteekateeka y'Ekibiina ya bwereere emirembe gyonna. Enteekateeka ezibaako ensasula ziwa ennaku 14 ez'okuzzaayo ssente."
+    },
+    "faq4": {
+      "question": "Muwa discount eri NGOs?",
+      "answer": "Ye, tuwa ebbeeyi ey'enjawulo eri NGOs, amalwaliro, n'ebitongole ebitali bya bizinensi. Tuweereze okufuna ebbeeyi ey'enjawulo."
+    },
+    "needHelp": "Weetaaga obuyambi okulonda?",
+    "contactUs": "Ttiimu yaffe eri wano okukuyamba okulonda enteekateeka ekukwata.",
+    "talkToUs": "Tuweereze",
+    "contact": "Weetaaga enteekateeka eyenjawulo?",
+    "contactDescription": "Eri amalwaliro amanene oba NGOs, tusobola okukola enteekateeka ey'enjawulo.",
+    "plans": {
+      "free": {
+        "feature1": "Enteekateeka 5 z'emmere buli mwezi",
+        "feature2": "Okubuulirira kw'emmere okw'omusingi",
+        "feature3": "Okufuna database y'emmere z'omu kitundu",
+        "feature4": "Okufuna data nga oli offline",
+        "feature5": "Ekifo ky'okubuzaako mu kibiina"
+      },
+      "basic": {
+        "feature1": "Enteekateeka z'emmere ezitaliiko kkomo",
+        "feature2": "Okwekenneenya emmere okw'amaanyi",
+        "feature3": "Okubuulirira kw'emmere okw'obuntu bwo",
+        "feature4": "Omuyambi w'AI n'eddoboozi",
+        "feature5": "Okukola ebingi (emmere 10)",
+        "feature6": "Obuyambi bwa email obw'amaanyi",
+        "feature7": "Okukuuma ebyafaayo by'emmere",
+        "feature8": "Enkola ya offline n'okutereka"
+      },
+      "pro": {
+        "feature1": "Ebintu byonna ebiri mu Individual",
+        "feature2": "Okukola ebingi okutaliiko kkomo",
+        "feature3": "Okukwata abalwadde bangi (5)",
+        "feature4": "Okufulumya lipoota (PDF/Excel)",
+        "feature5": "Enteekateeka z'emmere ez'enjawulo",
+        "feature6": "Obuyambi bwa simu n'email",
+        "feature7": "Dashboard y'okwekenneenya",
+        "feature8": "Okubuzaako omukugu (1/mwezi)"
+      },
+      "enterprise": {
+        "feature1": "Ebintu byonna ebiri mu Professional",
+        "feature2": "Abakozesa abataliiko kkomo & API",
+        "feature3": "Okukola brand yo",
+        "feature4": "Analytics n'alipoota ez'amaanyi",
+        "feature5": "Okugatta ebintu (EMR/EHR)",
+        "feature6": "Omukulu w'akawunti yo",
+        "feature7": "Obuyambi bwa 24/7",
+        "feature8": "Okusomesa n'okutandika"
+      }
+    }
+  },
+  "contact": {
+    "title": "Tuweereze",
+    "subtitle": "Olina ebibuuzo? Twagala okuwulira okuva gy'oli. Tuweereze obubaka era tujja kukuddamu mangu."
+  },
+  "errors": {
+    "predictionFailed": "Tewali kuyinza kuteekateeka. Gezaako nate."
+  }
+}

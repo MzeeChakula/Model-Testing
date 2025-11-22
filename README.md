@@ -10,6 +10,7 @@ This repository contains the frontend and backend for the MzeeChakula nutrition 
 
 - Frontend (static UI): <https://mzeechakula.vercel.app/>
 - Backend API: <https://mzeechakula-backend.onrender.com/>
+- **Project Documentation**: [Documentation/README.md](../Documentation/README.md) (Run locally for full site)
 
 ## Quick links
 
@@ -27,7 +28,7 @@ cd Model-Testing
 
 2.Backend (Python / FastAPI)
 
-- Requirements: Python 3.9+ and a virtual environment.
+- Requirements: Python 3.12+ and a virtual environment.
 
 ```bash
 # from repo root
